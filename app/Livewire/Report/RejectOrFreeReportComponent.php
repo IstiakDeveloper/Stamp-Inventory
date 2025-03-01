@@ -14,6 +14,8 @@ class RejectOrFreeReportComponent extends Component
     public $currentYear;
     public $previousMonthNetLoss;
     public $rejectOrFreeRecords;
+    public $cumulativeSets;     // Added property for cumulative sets
+    public $cumulativeLoss;     // Added property for cumulative loss
 
     public function mount()
     {
@@ -26,6 +28,9 @@ class RejectOrFreeReportComponent extends Component
 
         // Fetch records for the current month and year
         $this->fetchRecords();
+
+        // Calculate cumulative sets and loss
+        $this->calculateCumulatives();
     }
 
     public function calculatePreviousMonthNetLoss($selectedMonth, $selectedYear)
@@ -40,6 +45,13 @@ class RejectOrFreeReportComponent extends Component
         return $previousNetLoss;
     }
 
+    public function calculateCumulatives()
+    {
+        // Calculate all-time cumulative sets and loss (not just the current month)
+        $this->cumulativeSets = RejectOrFree::sum('sets');
+        $this->cumulativeLoss = RejectOrFree::sum('purchase_price_total');
+    }
+
     public function fetchRecords()
     {
         $this->rejectOrFreeRecords = RejectOrFree::whereMonth('date', $this->currentMonth)
@@ -52,6 +64,7 @@ class RejectOrFreeReportComponent extends Component
         // Recalculate when the month or year is changed
         $this->previousMonthNetLoss = $this->calculatePreviousMonthNetLoss($this->currentMonth, $this->currentYear);
         $this->fetchRecords();
+        $this->calculateCumulatives();
     }
 
     public function render()
@@ -65,21 +78,40 @@ class RejectOrFreeReportComponent extends Component
             $averageStampPricePerSet = 0;
         }
 
+        // Calculate this month's total loss
+        $totalMonthlyLoss = 0;
+        foreach ($this->rejectOrFreeRecords as $record) {
+            $totalMonthlyLoss += $record->sets * $averageStampPricePerSet;
+        }
+
         return view('livewire.report.reject-or-free-report-component', [
             'averageStampPricePerSet' => $averageStampPricePerSet,
             'totalSetsBuy' => $totalSetsBuy,
             'totalSetsBuyPrice' => $totalSetsBuyPrice,
+            'totalMonthlyLoss' => $totalMonthlyLoss,
+            'cumulativeSets' => $this->cumulativeSets,
+            'cumulativeLoss' => $this->cumulativeLoss,
         ]);
     }
 
     public function downloadPDF()
     {
+        // Calculate this month's total loss for the PDF
+        $averageStampPricePerSet = $this->getAverageStampPricePerSet();
+        $totalMonthlyLoss = 0;
+        foreach ($this->rejectOrFreeRecords as $record) {
+            $totalMonthlyLoss += $record->sets * $averageStampPricePerSet;
+        }
+
         $pdf = Pdf::loadView('pdf.reject-or-free-report', [
             'rejectOrFreeRecords' => $this->rejectOrFreeRecords,
-            'averageStampPricePerSet' => $this->getAverageStampPricePerSet(),
+            'averageStampPricePerSet' => $averageStampPricePerSet,
             'previousMonthNetLoss' => $this->previousMonthNetLoss,
             'currentMonth' => $this->currentMonth,
             'currentYear' => $this->currentYear,
+            'totalMonthlyLoss' => $totalMonthlyLoss,
+            'cumulativeSets' => $this->cumulativeSets,
+            'cumulativeLoss' => $this->cumulativeLoss,
         ]);
 
         return response()->stream(

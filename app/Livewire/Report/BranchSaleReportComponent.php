@@ -105,8 +105,6 @@ class BranchSaleReportComponent extends Component
         $this->totalDue = $cumulativeDue;
     }
 
-
-
     public function downloadPdf()
     {
         $branch = Branch::find($this->branchId);
@@ -121,6 +119,7 @@ class BranchSaleReportComponent extends Component
             'totalDue' => $this->totalDue,
             'fromDate' => $this->fromDate,
             'toDate' => $this->toDate,
+            // No need to pass receiver_name separately as it's already included in the sales collection
         ];
 
         $pdf = Pdf::loadView('pdf.branch-sale-report', $data);
@@ -154,6 +153,4 @@ class BranchSaleReportComponent extends Component
             'selectedBranch' => $selectedBranch,  // Pass the selected branch to the view
         ]);
     }
-
-
 }

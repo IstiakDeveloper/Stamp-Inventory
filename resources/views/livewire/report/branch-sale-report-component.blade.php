@@ -53,12 +53,13 @@
                         <th class="px-6 py-3 text-xs font-medium uppercase tracking-wider text-center">Previous Due</th>
                         <th class="px-6 py-3 text-xs font-medium uppercase tracking-wider text-center">Receive Cash</th>
                         <th class="px-6 py-3 text-xs font-medium uppercase tracking-wider text-center">Due</th>
+                        <th class="px-6 py-3 text-xs font-medium uppercase tracking-wider text-center">Receiver</th>
                         <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Total Due</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="bg-gray-100 border-b border-gray-200">
-                        <td class="px-6 py-4 text-sm font-medium text-gray-900" colspan="7">Previous Due:</td>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-900" colspan="8">Previous Due:</td>
                         <td class="px-6 py-4 text-sm font-medium text-gray-900 text-right">{{ $soFarOutstanding % 1 === 0 ? number_format($soFarOutstanding, 0) : number_format($soFarOutstanding, 2) }}</td>
                     </tr>
 
@@ -74,12 +75,13 @@
                                 <td class="px-6 py-4 text-sm text-gray-900 text-center">
                                     {{ ($sale->total_price - $sale->cash) % 1 === 0 ? number_format($sale->total_price - $sale->cash, 0) : number_format($sale->total_price - $sale->cash, 2) }}
                                 </td>
+                                <td class="px-6 py-4 text-sm text-gray-900 text-center">{{ $sale->receiver_name ?? 'N/A' }}</td>
                                 <td class="px-6 py-4 text-sm text-gray-900 text-right">{{ $sale->total_due % 1 === 0 ? number_format($sale->total_due, 0) : number_format($sale->total_due, 2) }}</td>
                             </tr>
                         @endforeach
                     @else
                         <tr>
-                            <td colspan="8" class="px-6 py-4 text-center text-sm text-gray-500">No sales data available for the selected period.</td>
+                            <td colspan="9" class="px-6 py-4 text-center text-sm text-gray-500">No sales data available for the selected period.</td>
                         </tr>
                     @endif
 
@@ -91,12 +93,14 @@
                         <td class="px-6 py-4 text-sm text-center">{{ $soFarOutstanding % 1 === 0 ? number_format($soFarOutstanding, 0) : number_format($soFarOutstanding, 2) }}</td>
                         <td class="px-6 py-4 text-sm text-center">{{ $totalCash % 1 === 0 ? number_format($totalCash, 0) : number_format($totalCash, 2) }}</td>
                         <td class="px-6 py-4 text-sm text-center">{{ $totalDue % 1 === 0 ? number_format($totalDue, 0) : number_format($totalDue, 2) }}</td>
+                        <td class="px-6 py-4 text-sm text-center">-</td>
                         @php
                             $lastSaleTotalDue = $sales->isNotEmpty() ? $sales->last()->total_due : 0;
                         @endphp
                         <td class="px-6 py-4 text-sm text-right">
                             {{ $lastSaleTotalDue % 1 === 0 ? number_format($lastSaleTotalDue, 0) : number_format($lastSaleTotalDue, 2) }}
-                        </td>                </tr>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
