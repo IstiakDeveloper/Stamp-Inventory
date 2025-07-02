@@ -73,7 +73,7 @@
                 </a>
                 <div id="report-dropdown" class="dropdown {{ request()->is('money_report', 'purchase_report', 'branch_sale_report', 'ho_sale_report', 'reject_free_report', 'expense_report', 'branch_total_report', 'balance_sheet', 'expenditure_sheet') ? 'active' : '' }}">
                     <a href="#" id="report-toggle" class="flex items-center cursor-pointer dropdown-toggle {{ request()->is('money_report', 'purchase_report', 'branch_sale_report', 'ho_sale_report', 'reject_free_report', 'expense_report', 'branch_total_report', 'balance_sheet', 'expenditure_sheet') ? 'active' : '' }}">
-                        <span class="material-icons-sharp text-sm">
+                        <span class="text-sm material-icons-sharp">
                             assessment
                         </span>
                         <h3 class="">Reports</h3>
@@ -83,85 +83,85 @@
                     </a>
                     <div id="report-content" class="dropdown-content {{ request()->is('money_report', 'purchase_report', 'branch_sale_report', 'ho_sale_report', 'reject_free_report', 'expense_report', 'branch_total_report', 'balance_sheet', 'expenditure_sheet') ? 'active' : '' }}">
                         <a href="{{ route('fund_management_report') }}" class="block p-2 {{ request()->routeIs('fund_management_report') ? 'active' : '' }}">
-                            <span class="material-icons-sharp text-sm">
+                            <span class="text-sm material-icons-sharp">
                                 {{ request()->routeIs('fund_management_report') ? 'radio_button_checked' : 'radio_button_unchecked' }}
                             </span>
                             Fund Report
                         </a>
                         <a href="{{ route('money_report') }}" class="block p-2 {{ request()->routeIs('money_report') ? 'active' : '' }}">
-                            <span class="material-icons-sharp text-sm">
+                            <span class="text-sm material-icons-sharp">
                                 {{ request()->routeIs('money_report') ? 'radio_button_checked' : 'radio_button_unchecked' }}
                             </span>
                             Money Report
                         </a>
                         <a href="{{ route('branch_sale_report') }}" class="block p-2 {{ request()->routeIs('branch_sale_report') ? 'active' : '' }}">
-                            <span class="material-icons-sharp text-sm">
+                            <span class="text-sm material-icons-sharp">
                                 {{ request()->routeIs('branch_sale_report') ? 'radio_button_checked' : 'radio_button_unchecked' }}
                             </span>
                             Branch Report
                         </a>
                         <a href="{{ route('branch_total_report') }}" class="block p-2 {{ request()->routeIs('branch_total_report') ? 'active' : '' }}">
-                            <span class="material-icons-sharp text-sm">
+                            <span class="text-sm material-icons-sharp">
                                 {{ request()->routeIs('branch_total_report') ? 'radio_button_checked' : 'radio_button_unchecked' }}
                             </span>
                             Branches Report
                         </a>
                         <a href="{{ route('ho_sale_report') }}" class="block p-2 {{ request()->routeIs('ho_sale_report') ? 'active' : '' }}">
-                            <span class="material-icons-sharp text-sm">
+                            <span class="text-sm material-icons-sharp">
                                 {{ request()->routeIs('ho_sale_report') ? 'radio_button_checked' : 'radio_button_unchecked' }}
                             </span>
                             HO Sale Report
                         </a>
                         <a href="{{ route('reject_free_report') }}" class="block p-2 {{ request()->routeIs('reject_free_report') ? 'active' : '' }}">
-                            <span class="material-icons-sharp text-sm">
+                            <span class="text-sm material-icons-sharp">
                                 {{ request()->routeIs('reject_free_report') ? 'radio_button_checked' : 'radio_button_unchecked' }}
                             </span>
                             Reject/Free Report
                         </a>
                         <a href="{{ route('expense_report') }}" class="block p-2 {{ request()->routeIs('expense_report') ? 'active' : '' }}">
-                            <span class="material-icons-sharp text-sm">
+                            <span class="text-sm material-icons-sharp">
                                 {{ request()->routeIs('expense_report') ? 'radio_button_checked' : 'radio_button_unchecked' }}
                             </span>
                             Expense Report
                         </a>
                         <a href="{{ route('bank_balance_report') }}" class="block p-2 {{ request()->routeIs('bank_balance_report') ? 'active' : '' }}">
-                            <span class="material-icons-sharp text-sm">
+                            <span class="text-sm material-icons-sharp">
                                 {{ request()->routeIs('bank_balance_report') ? 'radio_button_checked' : 'radio_button_unchecked' }}
                             </span>
                             Bank Balance Report
                         </a>
                         <a href="{{ route('stock_register_report') }}" class="block p-2 {{ request()->routeIs('stock_register_report') ? 'active' : '' }}">
-                            <span class="material-icons-sharp text-sm">
+                            <span class="text-sm material-icons-sharp">
                                 {{ request()->routeIs('stock_register_report') ? 'radio_button_checked' : 'radio_button_unchecked' }}
                             </span>
                             Stock Register Report
                         </a>
                         <a href="{{ route('purchase_report') }}" class="block p-2 {{ request()->routeIs('purchase_report') ? 'active' : '' }}">
-                            <span class="material-icons-sharp text-sm">
+                            <span class="text-sm material-icons-sharp">
                                 {{ request()->routeIs('purchase_report') ? 'radio_button_checked' : 'radio_button_unchecked' }}
                             </span>
                             Purchase Report
                         </a>
                         <a href="{{ route('receipt_payment') }}" class="block p-2 {{ request()->routeIs('receipt_payment') ? 'active' : '' }}">
-                            <span class="material-icons-sharp text-sm">
+                            <span class="text-sm material-icons-sharp">
                                 {{ request()->routeIs('receipt_payment') ? 'radio_button_checked' : 'radio_button_unchecked' }}
                             </span>
                             Receipt & Payment
                         </a>
                         <a href="{{ route('expenditure_sheet') }}" class="block p-2 {{ request()->routeIs('expenditure_sheet') ? 'active' : '' }}">
-                            <span class="material-icons-sharp text-sm">
+                            <span class="text-sm material-icons-sharp">
                                 {{ request()->routeIs('expenditure_sheet') ? 'radio_button_checked' : 'radio_button_unchecked' }}
                             </span>
                             Income & Expenditure
                         </a>
                         {{-- <a href="{{ route('transection_report') }}" class="block p-2 {{ request()->routeIs('transection_report') ? 'active' : '' }}">
-                            <span class="material-icons-sharp text-sm">
+                            <span class="text-sm material-icons-sharp">
                                 {{ request()->routeIs('transection_report') ? 'radio_button_checked' : 'radio_button_unchecked' }}
                             </span>
                             Transections Sheet
                         </a> --}}
                         <a href="{{ route('balance_sheet') }}" class="block p-2 {{ request()->routeIs('balance_sheet') ? 'active' : '' }}">
-                            <span class="material-icons-sharp text-sm">
+                            <span class="text-sm material-icons-sharp">
                                 {{ request()->routeIs('balance_sheet') ? 'radio_button_checked' : 'radio_button_unchecked' }}
                             </span>
                             Balance Sheet

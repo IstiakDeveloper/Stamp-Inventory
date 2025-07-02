@@ -108,7 +108,7 @@ class Dashboard extends Component
         $this->totalOfficeSaleAmount = $headOfficeSaleQuery->sum('cash');
         $totalOfficeSaleSets = $headOfficeSaleQuery->sum('sets');
         $totalSaleSets = $totalBranchSaleSets + $totalOfficeSaleSets;
-        
+
         $this->totalSaleAmount = $this->totalBranchSaleAmount + $this->totalOfficeSaleAmount;
         $this->rejectTotal = $rejectOrFreeQuery->sum('sets');
 
@@ -123,7 +123,7 @@ class Dashboard extends Component
         } else {
             $this->averageStampPricePerSet = 0;
         }
-        
+
         $saleStampBuyAmount = $this->averageStampPricePerSet * $totalSaleSets;
 
         $this->totalStampAvailable = TotalStock::sum('total_sets');

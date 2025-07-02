@@ -1,23 +1,23 @@
-<div class="max-w-6xl mx-auto px-4">
+<div class="max-w-6xl px-4 mx-auto">
     <!-- Navigation Section -->
-    <div class="flex justify-around mb-4 py-4 border rounded-lg">
-        <a href="{{ route('branch_sale') }}" class="flex items-center p-4 bg-white shadow-md rounded-lg text-gray-700 hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out active:bg-blue-700">
-            <x-lucide-shopping-cart class="h-6 w-6 mr-2" />
+    <div class="flex justify-around py-4 mb-4 border rounded-lg">
+        <a href="{{ route('branch_sale') }}" class="flex items-center p-4 text-gray-700 transition duration-300 ease-in-out bg-white rounded-lg shadow-md hover:bg-blue-500 hover:text-white active:bg-blue-700">
+            <x-lucide-shopping-cart class="w-6 h-6 mr-2" />
             <span>Sell (Branch)</span>
         </a>
-        <a href="{{ route('office_sale') }}" class="flex items-center p-4 bg-white shadow-md rounded-lg text-gray-700 hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out active:bg-blue-700">
-            <x-lucide-store class="h-6 w-6 mr-2" />
+        <a href="{{ route('office_sale') }}" class="flex items-center p-4 text-gray-700 transition duration-300 ease-in-out bg-white rounded-lg shadow-md hover:bg-blue-500 hover:text-white active:bg-blue-700">
+            <x-lucide-store class="w-6 h-6 mr-2" />
             <span>Sell (HO)</span>
         </a>
-        <a href="{{ route('expences') }}" class="flex items-center p-4 bg-white shadow-md rounded-lg text-gray-700 hover:bg-blue-500 hover:text-white transition duration-300 ease-in-out active:bg-blue-700">
-            <x-lucide-wallet class="h-6 w-6 mr-2" />
+        <a href="{{ route('expences') }}" class="flex items-center p-4 text-gray-700 transition duration-300 ease-in-out bg-white rounded-lg shadow-md hover:bg-blue-500 hover:text-white active:bg-blue-700">
+            <x-lucide-wallet class="w-6 h-6 mr-2" />
             <span>Expense</span>
         </a>
     </div>
 
     <!-- Filter Section -->
-    <div class="mb-2 hidden">
-        <form class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 p-4 bg-white shadow rounded-lg">
+    <div class="hidden mb-2">
+        <form class="grid grid-cols-1 gap-6 p-4 bg-white rounded-lg shadow sm:grid-cols-2 lg:grid-cols-2">
             <div class="flex flex-col">
                 <select wire:model.live="selectedYear" id="year" class="p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                     @foreach($years as $year)
@@ -36,61 +36,62 @@
     </div>
 
     <!-- Metrics Section -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <div class="grid grid-cols-1 gap-4 mb-8 sm:grid-cols-2 lg:grid-cols-4">
 
         <!-- Bank Balance -->
-        <div class="bg-white shadow-md rounded-lg p-6 flex items-center justify-between mt-4">
+        <div class="flex items-center justify-between p-6 mt-4 bg-white rounded-lg shadow-md">
             <div>
-                <span class="text-gray-400 text-sm">Bank Balance</span>
+                <span class="text-sm text-gray-400">Bank Balance</span>
                 <h2 class="text-xl font-bold">
+
                     {{ $totalBalance == intval($totalBalance) ? number_format($totalBalance, 0) : number_format($totalBalance, 2) }}
                 </h2>
             </div>
-            <x-lucide-currency class="text-blue-500 h-10 w-10" />
+            <x-lucide-currency class="w-10 h-10 text-blue-500" />
         </div>
 
         <!-- Total Outstanding Balance -->
-        <div class="bg-white shadow-md rounded-lg p-6 flex items-center justify-between mt-4">
+        <div class="flex items-center justify-between p-6 mt-4 bg-white rounded-lg shadow-md">
             <div>
-                <span class="text-gray-400 text-sm">Branch Total Due</span>
+                <span class="text-sm text-gray-400">Branch Total Due</span>
                 <h2 class="text-xl font-bold">
                     {{ $totalOutstandingBalance == intval($totalOutstandingBalance) ? number_format($totalOutstandingBalance, 0) : number_format($totalOutstandingBalance, 2) }}
                 </h2>
             </div>
-            <x-lucide-hand-coins class="text-blue-500 h-10 w-10" />
+            <x-lucide-hand-coins class="w-10 h-10 text-blue-500" />
         </div>
 
         <!-- Total Stamp Available -->
-        <div class="bg-white shadow-md rounded-lg p-6 flex items-center justify-between mt-4">
+        <div class="flex items-center justify-between p-6 mt-4 bg-white rounded-lg shadow-md">
             <div>
-                <span class="text-gray-400 text-sm">Stamp Available</span>
+                <span class="text-sm text-gray-400">Stamp Available</span>
                 <h2 class="text-xl font-bold">
                     {{ $totalStampAvailable == intval($totalStampAvailable) ? number_format($totalStampAvailable, 0) : number_format($totalStampAvailable, 0) }}
                 </h2>
             </div>
-            <x-lucide-box class="text-blue-500 h-10 w-10" />
+            <x-lucide-box class="w-10 h-10 text-blue-500" />
         </div>
 
         <!-- Average Stamp Price per Set -->
-        <div class="bg-white shadow-md rounded-lg p-6 flex items-center justify-between mt-4">
+        <div class="flex items-center justify-between p-6 mt-4 bg-white rounded-lg shadow-md">
             <div>
-                <span class="text-gray-400 text-sm">Stock Buy Price</span>
+                <span class="text-sm text-gray-400">Stock Buy Price</span>
                 <h2 class="text-xl font-bold">
                     @php
                         $product = $averageStampPricePerSet * $totalStampAvailable;
                     @endphp
-                
+
                     {{-- Format the result --}}
                     {{ $product == intval($product) ? number_format($product, 0) : number_format($product, 2) }}
                 </h2>
             </div>
-            <x-lucide-credit-card class="text-blue-500 h-10 w-10" />
+            <x-lucide-credit-card class="w-10 h-10 text-blue-500" />
         </div>
 
         <!-- Total Rejects -->
-        <div class="bg-white shadow-md rounded-lg p-6 flex items-center justify-between mt-4">
+        <div class="flex items-center justify-between p-6 mt-4 bg-white rounded-lg shadow-md">
             <div>
-                <span class="text-gray-400 text-sm">Total Rejects</span>
+                <span class="text-sm text-gray-400">Total Rejects</span>
                 <h2 class="text-xl font-bold">
                     @php
                         $value = $rejectTotal;
@@ -101,83 +102,83 @@
                 </h2>
 
             </div>
-            <x-lucide-ban class="text-blue-500 h-10 w-10" />
+            <x-lucide-ban class="w-10 h-10 text-blue-500" />
         </div>
 
         <!-- Total Payment Amount -->
-        <div class="bg-white shadow-md rounded-lg p-6 flex items-center justify-between mt-4">
+        <div class="flex items-center justify-between p-6 mt-4 bg-white rounded-lg shadow-md">
             <div>
-                <span class="text-gray-400 text-sm">Funds</span>
+                <span class="text-sm text-gray-400">Funds</span>
                 <h2 class="text-xl font-bold">
                     @formatNumber($this->funds)
                 </h2>
             </div>
-            <x-lucide-circle-dollar-sign class="text-blue-500 h-10 w-10" />
+            <x-lucide-circle-dollar-sign class="w-10 h-10 text-blue-500" />
         </div>
 
         <!-- Cumulative Income -->
-        <div class="bg-white shadow-md rounded-lg p-6 flex items-center justify-between mt-4">
+        <div class="flex items-center justify-between p-6 mt-4 bg-white rounded-lg shadow-md">
             <div>
-                <span class="text-gray-400 text-sm">Cumulative Income</span>
+                <span class="text-sm text-gray-400">Cumulative Income</span>
                 <h2 class="text-xl font-bold">
                     @formatNumber($this->cumulativeIncome)
                 </h2>
             </div>
-            <x-lucide-banknote class="text-blue-500 h-10 w-10" />
+            <x-lucide-banknote class="w-10 h-10 text-blue-500" />
         </div>
 
         <!-- Cumulative Loss -->
-        <div class="bg-white shadow-md rounded-lg p-6 flex items-center justify-between mt-4">
+        <div class="flex items-center justify-between p-6 mt-4 bg-white rounded-lg shadow-md">
             <div>
-                <span class="text-gray-400 text-sm">Cumulative Loss</span>
+                <span class="text-sm text-gray-400">Cumulative Loss</span>
                 <h2 class="text-xl font-bold">
                     @formatNumber($this->cumulativeLoss)
                 </h2>
             </div>
-            <x-lucide-shopping-bag class="text-blue-500 h-10 w-10" />
+            <x-lucide-shopping-bag class="w-10 h-10 text-blue-500" />
         </div>
 
         <!-- Cumulative Profit -->
-        <div class="bg-yellow-100 shadow-md rounded-lg p-6 flex items-center justify-between mt-4">
+        <div class="flex items-center justify-between p-6 mt-4 bg-yellow-100 rounded-lg shadow-md">
             <div>
-                <span class="text-gray-400 text-sm">Cumulative Profit</span>
+                <span class="text-sm text-gray-400">Cumulative Profit</span>
                 <h2 class="text-xl font-bold">
                     @formatNumber($this->cumulativeProfit)
                 </h2>
             </div>
-            <x-lucide-clipboard-check class="text-blue-500 h-10 w-10" />
+            <x-lucide-clipboard-check class="w-10 h-10 text-blue-500" />
         </div>
 
 
         <!-- Average Stamp Price per Set -->
-        <div class="bg-white shadow-md rounded-lg p-6 flex items-center justify-between mt-4">
+        <div class="flex items-center justify-between p-6 mt-4 bg-white rounded-lg shadow-md">
             <div>
-                <span class="text-gray-400 text-sm">Per Set Buy Price</span>
+                <span class="text-sm text-gray-400">Per Set Buy Price</span>
                 <h2 class="text-xl font-bold">
                     {{ $averageStampPricePerSet == intval($averageStampPricePerSet) ? number_format($averageStampPricePerSet, 0) : number_format($averageStampPricePerSet, 2) }}
                 </h2>
             </div>
-            <x-lucide-diamond-percent class="text-blue-500 h-10 w-10" />
+            <x-lucide-diamond-percent class="w-10 h-10 text-blue-500" />
         </div>
 
         <!-- Average Stamp Price per Set -->
-        <div class="bg-white shadow-md rounded-lg p-6 flex items-center justify-between mt-4">
+        <div class="flex items-center justify-between p-6 mt-4 bg-white rounded-lg shadow-md">
             <div>
-                <span class="text-gray-400 text-sm">Stamp Unit Price</span>
+                <span class="text-sm text-gray-400">Stamp Unit Price</span>
                 <h2 class="text-xl font-bold">
                     @formatNumber($this->unitPrice)
                 </h2>
             </div>
-            <x-lucide-dollar-sign class="text-blue-500 h-10 w-10" />
+            <x-lucide-dollar-sign class="w-10 h-10 text-blue-500" />
         </div>
 
         <!-- Total Branches -->
-        <div class="bg-white shadow-md rounded-lg p-6 flex items-center justify-between mt-4">
+        <div class="flex items-center justify-between p-6 mt-4 bg-white rounded-lg shadow-md">
             <div>
-                <span class="text-gray-400 text-sm">Total Branches</span>
+                <span class="text-sm text-gray-400">Total Branches</span>
                 <h2 class="text-xl font-bold">{{ $totalBranch }}</h2>
             </div>
-            <x-lucide-store class="text-blue-500 h-10 w-10" />
+            <x-lucide-store class="w-10 h-10 text-blue-500" />
         </div>
     </div>
 </div>
