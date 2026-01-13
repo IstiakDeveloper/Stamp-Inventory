@@ -13,7 +13,7 @@
 
         body {
             font-family: 'DejaVu Sans', Arial, sans-serif;
-            font-size: 9px;
+            font-size: 8px;
             color: #000;
             padding: 15px;
             line-height: 1.3;
@@ -22,50 +22,45 @@
         .report-header {
             text-align: center;
             margin-bottom: 15px;
-            border-bottom: 2px solid #000;
+            border-bottom: 3px solid #000;
             padding-bottom: 10px;
         }
 
         .report-header h1 {
-            font-size: 16px;
+            font-size: 18px;
             font-weight: bold;
-            margin-bottom: 3px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            margin-bottom: 5px;
         }
 
         .report-header h2 {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: bold;
             margin-bottom: 5px;
-            text-transform: uppercase;
         }
 
         .report-info {
             text-align: center;
             margin-bottom: 12px;
-            font-size: 8px;
+            font-size: 10px;
             font-weight: bold;
         }
 
         table { width: 100%; border-collapse: collapse; font-size: 8px; }
-        th, td { border: 1px solid #333; padding: 4px; text-align: left; }
-        th { background-color: #000; color: #fff; font-weight: bold; }
-        .total-row { background-color: #d0d0d0; font-weight: bold; border-top: 2px solid #000; }
-        .highlight-row { background-color: #f5f5f5; }
-        .loan-given { color: #dc2626; font-weight: bold; }
-        .loan-received { color: #059669; font-weight: bold; }
-        .previous-month { background-color: #e8e8e8; font-weight: bold; }
+        th, td { border: 1px solid #000; padding: 4px; text-align: left; }
+        th { font-weight: bold; border: 2px solid #000; }
+        .total-row { font-weight: bold; border-top: 3px solid #000; border-bottom: 3px solid #000; }
+        .total-row td { border-top: 3px solid #000; border-bottom: 3px solid #000; font-weight: bold; }
+        .previous-month { font-weight: bold; border: 2px solid #000; }
+        .previous-month td { font-weight: bold; border: 2px solid #000; }
         .summary { margin-top: 15px; font-size: 8px; }
         .summary-item { margin: 3px 0; }
 
         .footer {
             margin-top: 15px;
             padding-top: 8px;
-            border-top: 1px solid #333;
-            font-size: 7px;
+            border-top: 2px solid #000;
+            font-size: 8px;
             text-align: center;
-            color: #666;
         }
     </style>
 </head>
@@ -89,6 +84,7 @@
                     <th>Fund Out</th>
                     <th>Cash Receive</th>
                     <th>Purchase</th>
+                    <th>Other Income</th>
                     <th>Expenses</th>
                     <th>Loan Given</th>
                     <th>Loan Receive</th>
@@ -122,6 +118,12 @@
                             @php
                                 $previousMonthPurchasePrice = $previousMonthData['purchase_price'] ?? 0;
                                 echo $previousMonthPurchasePrice == intval($previousMonthPurchasePrice) ? number_format($previousMonthPurchasePrice, 0) : number_format($previousMonthPurchasePrice, 2);
+                            @endphp
+                        </td>
+                        <td>
+                            @php
+                                $previousMonthOtherIncome = $previousMonthData['other_income'] ?? 0;
+                                echo $previousMonthOtherIncome == intval($previousMonthOtherIncome) ? number_format($previousMonthOtherIncome, 0) : number_format($previousMonthOtherIncome, 2);
                             @endphp
                         </td>
                         <td>
@@ -160,6 +162,7 @@
                             ($entry['cash_out'] ?? 0) ||
                             ($entry['cash_receive'] ?? 0) ||
                             ($entry['purchase_price'] ?? 0) ||
+                            ($entry['other_income'] ?? 0) ||
                             ($entry['expenses'] ?? 0) ||
                             ($entry['loans_given'] ?? 0) ||
                             ($entry['loan_payments_received'] ?? 0)
@@ -190,6 +193,12 @@
                             @php
                                 $purchasePrice = $entry['purchase_price'] ?? 0;
                                 echo $purchasePrice == intval($purchasePrice) ? number_format($purchasePrice, 0) : number_format($purchasePrice, 2);
+                            @endphp
+                        </td>
+                        <td>
+                            @php
+                                $otherIncome = $entry['other_income'] ?? 0;
+                                echo $otherIncome == intval($otherIncome) ? number_format($otherIncome, 0) : number_format($otherIncome, 2);
                             @endphp
                         </td>
                         <td>
@@ -252,6 +261,12 @@
                     </td>
                     <td>
                         @php
+                            $totalOtherIncome = array_sum(array_column($data, 'other_income'));
+                            echo $totalOtherIncome == intval($totalOtherIncome) ? number_format($totalOtherIncome, 0) : number_format($totalOtherIncome, 2);
+                        @endphp
+                    </td>
+                    <td>
+                        @php
                             $totalExpenses = array_sum(array_column($data, 'expenses'));
                             echo $totalExpenses == intval($totalExpenses) ? number_format($totalExpenses, 0) : number_format($totalExpenses, 2);
                         @endphp
@@ -287,6 +302,7 @@
                 @php
                     $monthlyTotalIn = array_sum(array_column($data, 'cash_in')) +
                                      array_sum(array_column($data, 'cash_receive')) +
+                                     array_sum(array_column($data, 'other_income')) +
                                      array_sum(array_column($data, 'loan_payments_received'));
                     $monthlyTotalOut = array_sum(array_column($data, 'cash_out')) +
                                       array_sum(array_column($data, 'purchase_price')) +

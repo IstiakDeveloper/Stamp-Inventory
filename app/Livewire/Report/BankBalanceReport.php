@@ -7,6 +7,7 @@ use App\Models\HeadOfficeSale;
 use App\Models\Money;
 use App\Models\Stock;
 use App\Models\Expense;
+use App\Models\Income;
 use App\Models\Loan;
 use App\Models\LoanPayment;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -90,6 +91,7 @@ class BankBalanceReport extends Component
             'purchase_sets' => 0,
             'purchase_price' => 0,
             'expenses' => 0,
+            'other_income' => 0,
             'loans_given' => 0,
             'loan_payments_received' => 0
         ];
@@ -102,6 +104,7 @@ class BankBalanceReport extends Component
         $allTimeBeforeSummary['purchase_sets'] = Stock::whereDate('date', '<=', $endOfPreviousMonth)->sum('sets');
         $allTimeBeforeSummary['purchase_price'] = Stock::whereDate('date', '<=', $endOfPreviousMonth)->sum('total_price');
         $allTimeBeforeSummary['expenses'] = Expense::whereDate('date', '<=', $endOfPreviousMonth)->sum('amount');
+        $allTimeBeforeSummary['other_income'] = Income::whereDate('date', '<=', $endOfPreviousMonth)->sum('amount');
 
         // Add loan calculations
         $allTimeBeforeSummary['loans_given'] = Loan::where('date', '<=', $endOfPreviousMonth)->sum('amount');
@@ -115,6 +118,7 @@ class BankBalanceReport extends Component
             + $cashReceiveBefore
             - $allTimeBeforeSummary['purchase_price']
             - $allTimeBeforeSummary['expenses']
+            + $allTimeBeforeSummary['other_income']
             - $allTimeBeforeSummary['loans_given']
             + $allTimeBeforeSummary['loan_payments_received'];
 
@@ -126,6 +130,7 @@ class BankBalanceReport extends Component
             'purchase_price' => $allTimeBeforeSummary['purchase_price'],
             'cash_receive' => $cashReceiveBefore,
             'expenses' => $allTimeBeforeSummary['expenses'],
+            'other_income' => $allTimeBeforeSummary['other_income'],
             'loans_given' => $allTimeBeforeSummary['loans_given'],
             'loan_payments_received' => $allTimeBeforeSummary['loan_payments_received'],
             'balance' => $previousMonthBalance
@@ -142,13 +147,14 @@ class BankBalanceReport extends Component
             $purchasePrice = Stock::whereDate('date', $dateStr)->sum('total_price');
             $purchaseSets = Stock::whereDate('date', $dateStr)->sum('sets');
             $expenses = Expense::whereDate('date', $dateStr)->sum('amount');
+            $otherIncome = Income::whereDate('date', $dateStr)->sum('amount');
 
             // Add loan calculations for the specific date
             $loansGiven = Loan::where('date', $dateStr)->sum('amount');
             $loanPaymentsReceived = LoanPayment::where('date', $dateStr)->sum('amount');
 
             // Calculate available balance for this date
-            $balance += $cashIn - $cashOut + $cashReceive - $purchasePrice - $expenses - $loansGiven + $loanPaymentsReceived;
+            $balance += $cashIn - $cashOut + $cashReceive - $purchasePrice - $expenses + $otherIncome - $loansGiven + $loanPaymentsReceived;
 
             $currentMonthData[] = [
                 'date' => $dateStr,
@@ -158,6 +164,7 @@ class BankBalanceReport extends Component
                 'purchase_sets' => $purchaseSets,
                 'purchase_price' => $purchasePrice,
                 'expenses' => $expenses,
+                'other_income' => $otherIncome,
                 'loans_given' => $loansGiven,
                 'loan_payments_received' => $loanPaymentsReceived,
                 'available_balance' => $balance,
@@ -185,9 +192,12 @@ class BankBalanceReport extends Component
             'data' => $this->data,
             'month' => $monthName,
             'year' => $year,
-        ])->setPaper('a4')->output();
+        ])->setPaper('a4');
 
-        $base64 = base64_encode($pdf);
-        $this->dispatch('openPdfInNewTab', base64: $base64, filename: 'bank-balance-report-' . $monthName . '-' . $year . '.pdf');
+        return response()->streamDownload(function() use ($pdf) {
+            echo $pdf->output();
+        }, 'Bank-Balance-Report-' . $monthName . '-' . $year . '.pdf', [
+            'Content-Type' => 'application/pdf',
+        ]);
     }
 }

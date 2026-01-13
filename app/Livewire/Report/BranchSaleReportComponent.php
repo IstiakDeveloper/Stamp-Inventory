@@ -119,10 +119,13 @@ class BranchSaleReportComponent extends Component
             'totalDue' => $this->totalDue,
             'fromDate' => $this->fromDate,
             'toDate' => $this->toDate,
-        ])->setPaper('a4')->output();
+        ])->setPaper('a4');
 
-        $base64 = base64_encode($pdf);
-        $this->dispatch('openPdfInNewTab', base64: $base64, filename: 'branch-sale-report-' . ($this->fromDate ?? 'no-date') . '-to-' . ($this->toDate ?? 'no-date') . '.pdf');
+        $filename = 'Branch-Sale-Report-' . ($branch ? str_replace(' ', '-', $branch->branch_name) : 'Unknown') . '-' . ($this->fromDate ?? 'no-date') . '-to-' . ($this->toDate ?? 'no-date') . '.pdf';
+
+        return response()->streamDownload(function() use ($pdf) {
+            echo $pdf->output();
+        }, $filename, ['Content-Type' => 'application/pdf']);
     }
 
     public function calculateTotals()

@@ -5,6 +5,7 @@ namespace App\Livewire\Report;
 use App\Models\BranchSale;
 use App\Models\Expense;
 use App\Models\HeadOfficeSale;
+use App\Models\Income;
 use App\Models\Money;
 use App\Models\Stock;
 use App\Models\Loan;
@@ -61,13 +62,14 @@ class ReceiptPaymentReportComponent extends Component
         $expensesBefore = Expense::whereDate('date', '<=', $endOfPreviousMonth)->sum('amount');
         $cashReceiveBefore = HeadOfficeSale::where('date', '<=', $endOfPreviousMonth)->sum('cash')
             + BranchSale::where('date', '<=', $endOfPreviousMonth)->sum('cash');
+        $otherIncomeBefore = Income::where('date', '<=', $endOfPreviousMonth)->sum('amount');
 
         // Add loan calculations for opening balance
         $loansGivenBefore = Loan::where('date', '<=', $endOfPreviousMonth)->sum('amount');
         $loanPaymentsBefore = LoanPayment::where('date', '<=', $endOfPreviousMonth)->sum('amount');
 
         // Opening Cash at Bank (Previous Month's Balance) - including loan impact
-        $openingBalance = $cashInBefore - $cashOutBefore + $cashReceiveBefore - $purchaseBefore - $expensesBefore - $loansGivenBefore + $loanPaymentsBefore;
+        $openingBalance = $cashInBefore - $cashOutBefore + $cashReceiveBefore - $purchaseBefore - $expensesBefore + $otherIncomeBefore - $loansGivenBefore + $loanPaymentsBefore;
 
         // Data for the current month
         $stampSaleCollection = HeadOfficeSale::whereBetween('date', [$startDate, $endDate])->sum('cash')
@@ -75,6 +77,7 @@ class ReceiptPaymentReportComponent extends Component
 
         $fundReceive = Money::where('type', 'cash_in')
             ->whereBetween('date', [$startDate, $endDate])->sum('amount');
+        $otherIncome = Income::whereBetween('date', [$startDate, $endDate])->sum('amount');
 
         // Add loan payments received to receipts
         $loanPaymentsReceived = LoanPayment::whereBetween('date', [$startDate, $endDate])->sum('amount');
@@ -88,9 +91,9 @@ class ReceiptPaymentReportComponent extends Component
         $loansGiven = Loan::whereBetween('date', [$startDate, $endDate])->sum('amount');
 
         // Closing Cash at Bank - including loan impact
-        $closingBalance = $openingBalance + $stampSaleCollection + $fundReceive + $loanPaymentsReceived - $purchaseOfStamps - $fundRefund - $otherExpenses - $loansGiven;
+        $closingBalance = $openingBalance + $stampSaleCollection + $fundReceive + $otherIncome + $loanPaymentsReceived - $purchaseOfStamps - $fundRefund - $otherExpenses - $loansGiven;
 
-        $totalReceipt = $openingBalance + $stampSaleCollection + $fundReceive + $loanPaymentsReceived;
+        $totalReceipt = $openingBalance + $stampSaleCollection + $fundReceive + $otherIncome + $loanPaymentsReceived;
         $totalPayment = $purchaseOfStamps + $fundRefund + $otherExpenses + $loansGiven + $closingBalance;
 
         // Store data for rendering
@@ -98,6 +101,7 @@ class ReceiptPaymentReportComponent extends Component
             'opening_balance' => $openingBalance,
             'stamp_sale_collection' => $stampSaleCollection,
             'fund_receive' => $fundReceive,
+            'other_income' => $otherIncome,
             'loan_payments_received' => $loanPaymentsReceived,
             'purchase_of_stamps' => $purchaseOfStamps,
             'fund_refund' => $fundRefund,
@@ -122,15 +126,19 @@ class ReceiptPaymentReportComponent extends Component
             'data' => $this->data,
             'month' => (int)$this->month,
             'year' => (int)$this->year,
-        ])->setPaper('a4')->output();
+        ])->setPaper('a4', 'landscape');
 
-        $base64 = base64_encode($pdf);
-
-        $monthNames = ["", "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
+        $monthNames = [
+            1 => "January", 2 => "February", 3 => "March", 4 => "April",
+            5 => "May", 6 => "June", 7 => "July", 8 => "August",
+            9 => "September", 10 => "October", 11 => "November", 12 => "December"
         ];
-        $filename = 'Receipt-Payment-Statement-' . $monthNames[$this->month] . '-' . $this->year . '.pdf';
+        $filename = 'Receipt-Payment-Statement-' . $monthNames[(int)$this->month] . '-' . $this->year . '.pdf';
 
-        $this->dispatch('openPdfInNewTab', base64: $base64, filename: $filename);
+        return response()->streamDownload(function() use ($pdf) {
+            echo $pdf->output();
+        }, $filename, [
+            'Content-Type' => 'application/pdf',
+        ]);
     }
 }

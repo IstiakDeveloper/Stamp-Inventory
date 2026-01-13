@@ -9,6 +9,8 @@ use App\Livewire\Dashboard;
 use App\Livewire\ExpenseComponent;
 use App\Livewire\FundManagementComponent;
 use App\Livewire\HeadOfficeSaleComponent;
+use App\Livewire\IncomeComponent;
+use App\Livewire\IncomeExpenseComponent;
 use App\Livewire\LoanManagementComponent;
 use App\Livewire\LoginComponent;
 use App\Livewire\MoneyComponent;
@@ -19,6 +21,7 @@ use App\Livewire\Report\BranchSaleReportComponent;
 use App\Livewire\Report\ExpenseReportComponent;
 use App\Livewire\Report\FundManagementReportComponent;
 use App\Livewire\Report\HeadOfficeSaleReportComponent;
+use App\Livewire\Report\IncomeReportComponent;
 use App\Livewire\Report\MoneyReport;
 use App\Livewire\Report\PurchaseReport;
 use App\Livewire\Report\ReceiptPaymentReportComponent;
@@ -69,6 +72,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/head-office-sale', HeadOfficeSaleComponent::class)->name('office_sale');
     Route::get('/reject-free', RejectOrFreeComponent::class)->name('reject_free');
     Route::get('/expences', ExpenseComponent::class)->name('expences');
+    Route::get('/income', IncomeComponent::class)->name('income');
+    Route::get('/income-expense', IncomeExpenseComponent::class)->name('income_expense');
     Route::get('/expenditure-sheet', BalanceSheetComponent::class)->name('expenditure_sheet');
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
 
@@ -77,6 +82,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/report/branch-sale-report', BranchSaleReportComponent::class)->name('branch_sale_report');
     Route::get('/report/ho-sale-report', HeadOfficeSaleReportComponent::class)->name('ho_sale_report');
     Route::get('/report/reject-free-report', RejectOrFreeReportComponent::class)->name('reject_free_report');
+    Route::get('/report/income-report', IncomeReportComponent::class)->name('income_report');
     Route::get('/report/expense-report', ExpenseReportComponent::class)->name('expense_report');
     Route::get('/report/branch-total-report', AllBranchReportComponent::class)->name('branch_total_report');
     Route::get('/report/stock-register-report', StockRegisterReportComponent::class)->name('stock_register_report');

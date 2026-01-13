@@ -13,7 +13,7 @@
 
         body {
             font-family: 'DejaVu Sans', Arial, sans-serif;
-            font-size: 9px;
+            font-size: 10px;
             color: #000;
             padding: 15px;
             line-height: 1.3;
@@ -69,13 +69,11 @@
         }
 
         .data-table th {
-            background-color: #000;
-            color: #fff;
             font-weight: bold;
             padding: 5px 4px;
             text-align: center;
-            border: 1px solid #000;
-            font-size: 8px;
+            border: 2px solid #000;
+            font-size: 10px;
         }
 
         .data-table td {
@@ -85,11 +83,9 @@
         }
 
         .data-table tbody tr:nth-child(even) {
-            background-color: #f5f5f5;
         }
 
         .data-table tbody tr:hover {
-            background-color: #e8e8e8;
         }
 
         .text-center {
@@ -109,14 +105,15 @@
         }
 
         .outstanding-row {
-            background-color: #e0e0e0 !important;
             font-weight: bold;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
         }
 
         .total-row {
-            background-color: #d0d0d0 !important;
             font-weight: bold;
-            border-top: 2px solid #000 !important;
+            border-top: 3px solid #000;
+            border-bottom: 3px solid #000;
         }
 
         .total-row td {

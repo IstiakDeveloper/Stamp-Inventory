@@ -13,43 +13,40 @@
 
         body {
             font-family: 'DejaVu Sans', Arial, sans-serif;
-            font-size: 9px;
+            font-size: 10px;
             color: #000;
-            padding: 15px;
-            line-height: 1.3;
+            padding: 20px;
+            line-height: 1.4;
         }
 
         .report-header {
             text-align: center;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #000;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #000;
             padding-bottom: 10px;
         }
 
         .report-header h1 {
-            font-size: 16px;
+            font-size: 22px;
             font-weight: bold;
-            margin-bottom: 3px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            margin-bottom: 5px;
         }
 
         .report-header h2 {
-            font-size: 12px;
+            font-size: 16px;
             font-weight: bold;
-            margin-bottom: 5px;
-            text-transform: uppercase;
+            margin-bottom: 8px;
         }
 
         .report-header .date-info {
-            font-size: 9px;
+            font-size: 11px;
             margin-top: 5px;
         }
 
         .balance-container {
             width: 100%;
             display: table;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         .balance-column {
@@ -61,35 +58,28 @@
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 8px;
+            font-size: 10px;
         }
 
         .data-table th {
-            background-color: #000;
-            color: #fff;
             font-weight: bold;
-            padding: 5px 4px;
+            padding: 8px 6px;
             text-align: left;
-            border: 1px solid #000;
-            font-size: 8px;
+            border: 2px solid #000;
+            font-size: 10px;
         }
 
         .data-table td {
-            padding: 5px 4px;
-            border: 1px solid #333;
+            padding: 6px;
+            border: 1px solid #000;
             vertical-align: middle;
-        }
-
-        .data-table tbody tr {
-            height: 24px;
-        }
-
-        .data-table tbody tr:nth-child(even) {
-            background-color: #f5f5f5;
         }
 
         .text-right {
             text-align: right;
+        }
+        .text-center {
+            text-align: center;
         }
 
         .font-bold {
@@ -97,41 +87,46 @@
         }
 
         .total-row {
-            background-color: #d0d0d0 !important;
             font-weight: bold;
-            border-top: 2px solid #000 !important;
+            border-top: 3px solid #000 !important;
+            border-bottom: 3px solid #000 !important;
         }
 
         .total-row td {
+            border-top: 3px solid #000;
+            border-bottom: 3px solid #000;
+            padding: 8px 6px;
+            font-weight: bold;
+        }
+
+        .highlight-row {
             border-top: 2px solid #000;
-            padding: 5px 4px;
+            border-bottom: 2px solid #000;
+        }
+
+        .highlight-row td {
+            font-weight: bold;
         }
 
         .table-header {
-            background-color: #e8e8e8;
             font-weight: bold;
             text-align: center;
-            padding: 6px 4px;
-            border: 1px solid #000;
-            font-size: 9px;
+            padding: 8px 6px;
+            border: 2px solid #000;
+            font-size: 12px;
             text-transform: uppercase;
         }
 
         .footer {
-            margin-top: 15px;
-            padding-top: 8px;
-            border-top: 1px solid #333;
-            font-size: 7px;
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 2px solid #000;
+            font-size: 9px;
             text-align: center;
-            color: #666;
         }
 
         .empty-row td {
-            padding: 5px 4px;
-        }
-
-        .data-table tbody tr {
-            height: 24px;
+            padding: 6px;
         }
     </style>
 </head>
@@ -152,7 +147,7 @@
                 <thead>
                     <tr>
                         <th style="width: 65%;">Particulars</th>
-                        <th style="width: 35%;" class="text-right">Amount (৳)</th>
+                        <th style="width: 35%;" class="text-center">Amount</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -164,13 +159,9 @@
                         <td>Net Profit</td>
                         <td class="text-right">{{ number_format($netProfit, 2) }}</td>
                     </tr>
-                    <tr class="empty-row">
-                        <td>&nbsp;</td>
-                        <td class="text-right">&nbsp;</td>
-                    </tr>
-                    <tr class="empty-row">
-                        <td>&nbsp;</td>
-                        <td class="text-right">&nbsp;</td>
+                    <tr class="highlight-row">
+                        <td class="font-bold">Other Income</td>
+                        <td class="text-right font-bold">{{ number_format($totalOtherIncome ?? 0, 2) }}</td>
                     </tr>
                     <tr class="total-row">
                         <td class="font-bold">TOTAL</td>
@@ -187,7 +178,7 @@
                 <thead>
                     <tr>
                         <th style="width: 65%;">Particulars</th>
-                        <th style="width: 35%;" class="text-right">Amount (৳)</th>
+                        <th style="width: 35%;" class="text-center">Amount</th>
                     </tr>
                 </thead>
                 <tbody>

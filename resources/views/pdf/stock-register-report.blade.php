@@ -13,7 +13,7 @@
 
         body {
             font-family: 'DejaVu Sans', sans-serif;
-            font-size: 9px;
+            font-size: 10px;
             line-height: 1.3;
             color: #000;
             padding: 15px;
@@ -40,7 +40,7 @@
         }
 
         .header p {
-            font-size: 9px;
+            font-size: 10px;
             color: #333;
         }
 
@@ -51,20 +51,18 @@
         }
 
         th {
-            background-color: #000;
-            color: #fff;
             font-weight: bold;
             text-align: center;
             padding: 6px 4px;
-            border: 1px solid #000;
-            font-size: 8px;
+            border: 2px solid #000;
+            font-size: 10px;
             text-transform: uppercase;
         }
 
         td {
             padding: 4px;
             border: 1px solid #000;
-            font-size: 8px;
+            font-size: 10px;
             vertical-align: middle;
         }
 
@@ -73,26 +71,29 @@
         .text-right { text-align: right; }
 
         .previous-row {
-            background-color: #90ee90;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
             font-weight: bold;
         }
 
         .data-row {
-            background-color: #f5f5f5;
         }
 
         .monthly-total-row {
-            background-color: #add8e6;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
             font-weight: bold;
         }
 
         .cumulative-total-row {
-            background-color: #90ee90;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
             font-weight: bold;
         }
 
         .stock-price-row {
-            background-color: #90ee90;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
             font-weight: bold;
         }
 

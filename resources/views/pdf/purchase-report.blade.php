@@ -13,77 +13,66 @@
 
         body {
             font-family: 'DejaVu Sans', Arial, sans-serif;
-            font-size: 9px;
+            font-size: 10px;
             color: #000;
-            padding: 15px;
-            line-height: 1.3;
+            padding: 20px;
+            line-height: 1.4;
         }
 
         .report-header {
             text-align: center;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #000;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #000;
             padding-bottom: 10px;
         }
 
         .report-header h1 {
-            font-size: 16px;
+            font-size: 22px;
             font-weight: bold;
-            margin-bottom: 3px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            margin-bottom: 5px;
         }
 
         .report-header h2 {
-            font-size: 12px;
+            font-size: 16px;
             font-weight: bold;
-            margin-bottom: 5px;
-            text-transform: uppercase;
+            margin-bottom: 8px;
         }
 
         .report-info {
             text-align: center;
-            margin-bottom: 12px;
-            font-size: 9px;
+            margin-bottom: 15px;
+            font-size: 11px;
         }
 
         .total-section {
             text-align: right;
-            margin-bottom: 10px;
-            padding: 8px;
-            background-color: #f5f5f5;
-            border: 1px solid #000;
+            margin-bottom: 12px;
+            padding: 10px;
+            border: 2px solid #000;
             font-weight: bold;
-            font-size: 10px;
+            font-size: 11px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 8px;
+            font-size: 10px;
         }
 
         th, td {
-            border: 1px solid #333;
-            padding: 5px 4px;
+            border: 1px solid #000;
+            padding: 6px;
             vertical-align: middle;
         }
 
         th {
-            background-color: #000;
-            color: #fff;
             font-weight: bold;
             text-align: center;
-            font-size: 8px;
-            text-transform: uppercase;
+            font-size: 10px;
+            border: 2px solid #000;
         }
 
         td {
-            background-color: #fff;
-        }
-
-        tbody tr:nth-child(even) {
-            background-color: #f5f5f5;
         }
 
         .text-left { text-align: left; }
@@ -112,7 +101,7 @@
     </div>
 
     <div class="total-section">
-        Total Stock Value: ৳{{ rtrim(rtrim(number_format($totalStockSum, 2, '.', ''), '0'), '.') }}
+        Total Stock Value: {{ rtrim(rtrim(number_format($totalStockSum, 2, '.', ''), '0'), '.') }}
     </div>
 
     <table>

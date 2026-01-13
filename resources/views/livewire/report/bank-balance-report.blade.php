@@ -40,13 +40,14 @@
                     <tr>
                         <th class="px-3 py-3 text-left">SL</th>
                         <th class="px-3 py-3 text-left">Date</th>
-                        <th class="px-3 py-3 text-left">Fund In</th>
-                        <th class="px-3 py-3 text-left">Fund Out</th>
-                        <th class="px-3 py-3 text-left">Cash Receive</th>
-                        <th class="px-3 py-3 text-left">Purchase</th>
-                        <th class="px-3 py-3 text-left">Expenses</th>
-                        <th class="px-3 py-3 text-left">Loan Given</th>
-                        <th class="px-3 py-3 text-left">Loan Receive</th>
+                        <th class="px-3 py-3 text-left bg-green-600">Fund In</th>
+                        <th class="px-3 py-3 text-left bg-red-600">Fund Out</th>
+                        <th class="px-3 py-3 text-left bg-green-600">Cash Receive</th>
+                        <th class="px-3 py-3 text-left bg-red-600">Purchase</th>
+                        <th class="px-3 py-3 text-left bg-green-600">Other Income</th>
+                        <th class="px-3 py-3 text-left bg-red-600">Expenses</th>
+                        <th class="px-3 py-3 text-left bg-red-600">Loan Given</th>
+                        <th class="px-3 py-3 text-left bg-green-600">Loan Receive</th>
                         <th class="px-3 py-3 text-left">Bank Balance</th>
                     </tr>
                 </thead>
@@ -55,25 +56,28 @@
                         <tr class="bg-green-200">
                             <td class="px-3 py-4 text-sm font-medium text-gray-900" colspan="2">Previous Month Data
                             </td>
-                            <td class="px-3 py-4 text-gray-500">
+                            <td class="px-3 py-4 font-semibold text-green-700 bg-green-50">
                                 {{ number_format($previousMonthData['cash_in'] ?? 0, 2) }}
                             </td>
-                            <td class="px-3 py-4 text-gray-500">
+                            <td class="px-3 py-4 font-semibold text-red-700 bg-red-50">
                                 {{ number_format($previousMonthData['cash_out'] ?? 0, 2) }}
                             </td>
-                            <td class="px-3 py-4 text-gray-500">
+                            <td class="px-3 py-4 font-semibold text-green-700 bg-green-50">
                                 {{ number_format($previousMonthData['cash_receive'] ?? 0, 2) }}
                             </td>
-                            <td class="px-3 py-4 text-gray-500">
+                            <td class="px-3 py-4 font-semibold text-red-700 bg-red-50">
                                 {{ number_format($previousMonthData['purchase_price'] ?? 0, 2) }}
                             </td>
-                            <td class="px-3 py-4 text-gray-500">
+                            <td class="px-3 py-4 font-semibold text-green-700 bg-green-50">
+                                {{ number_format($previousMonthData['other_income'] ?? 0, 2) }}
+                            </td>
+                            <td class="px-3 py-4 font-semibold text-red-700 bg-red-50">
                                 {{ number_format($previousMonthData['expenses'] ?? 0, 2) }}
                             </td>
-                            <td class="px-3 py-4 font-medium text-red-600">
+                            <td class="px-3 py-4 font-semibold text-red-700 bg-red-50">
                                 {{ number_format($previousMonthData['loans_given'] ?? 0, 2) }}
                             </td>
-                            <td class="px-3 py-4 font-medium text-green-600">
+                            <td class="px-3 py-4 font-semibold text-green-700 bg-green-50">
                                 {{ number_format($previousMonthData['loan_payments_received'] ?? 0, 2) }}
                             </td>
                             <td class="px-3 py-4 font-semibold text-gray-900">
@@ -90,9 +94,10 @@
                                 $entry['cash_receive'] ||
                                 $entry['purchase_price'] ||
                                 $entry['expenses'] ||
+                                $entry['other_income'] ||
                                 $entry['loans_given'] ||
                                 $entry['loan_payments_received'];
-                            $rowClass = $hasActivity ? 'bg-yellow-100' : '';
+                            $rowClass = $hasActivity ? 'bg-yellow-50' : '';
                         @endphp
                         <tr class="{{ $rowClass }} hover:bg-gray-50">
                             <td class="px-3 py-3 text-sm font-medium text-gray-900">
@@ -101,27 +106,28 @@
                             <td class="px-3 py-3 text-gray-700">
                                 {{ \Carbon\Carbon::parse($entry['date'])->format('d-m-Y') }}
                             </td>
-                            <td class="px-3 py-3 text-gray-600">
+                            <td class="px-3 py-3 {{ $entry['cash_in'] > 0 ? 'text-green-700 font-semibold bg-green-50' : 'text-gray-600' }}">
                                 {{ number_format($entry['cash_in'] ?? 0, 2) }}
                             </td>
-                            <td class="px-3 py-3 text-gray-600">
+                            <td class="px-3 py-3 {{ $entry['cash_out'] > 0 ? 'text-red-700 font-semibold bg-red-50' : 'text-gray-600' }}">
                                 {{ number_format($entry['cash_out'] ?? 0, 2) }}
                             </td>
-                            <td class="px-3 py-3 text-gray-600">
+                            <td class="px-3 py-3 {{ $entry['cash_receive'] > 0 ? 'text-green-700 font-semibold bg-green-50' : 'text-gray-600' }}">
                                 {{ number_format($entry['cash_receive'] ?? 0, 2) }}
                             </td>
-                            <td class="px-3 py-3 text-gray-600">
+                            <td class="px-3 py-3 {{ $entry['purchase_price'] > 0 ? 'text-red-700 font-semibold bg-red-50' : 'text-gray-600' }}">
                                 {{ number_format($entry['purchase_price'] ?? 0, 2) }}
                             </td>
-                            <td class="px-3 py-3 text-gray-600">
+                            <td class="px-3 py-3 {{ $entry['other_income'] > 0 ? 'text-green-700 font-semibold bg-green-50' : 'text-gray-600' }}">
+                                {{ number_format($entry['other_income'] ?? 0, 2) }}
+                            </td>
+                            <td class="px-3 py-3 {{ $entry['expenses'] > 0 ? 'text-red-700 font-semibold bg-red-50' : 'text-gray-600' }}">
                                 {{ number_format($entry['expenses'] ?? 0, 2) }}
                             </td>
-                            <td
-                                class="px-3 py-3 {{ $entry['loans_given'] > 0 ? 'text-red-600 font-semibold' : 'text-gray-600' }}">
+                            <td class="px-3 py-3 {{ $entry['loans_given'] > 0 ? 'text-red-700 font-semibold bg-red-50' : 'text-gray-600' }}">
                                 {{ number_format($entry['loans_given'] ?? 0, 2) }}
                             </td>
-                            <td
-                                class="px-3 py-3 {{ $entry['loan_payments_received'] > 0 ? 'text-green-600 font-semibold' : 'text-gray-600' }}">
+                            <td class="px-3 py-3 {{ $entry['loan_payments_received'] > 0 ? 'text-green-700 font-semibold bg-green-50' : 'text-gray-600' }}">
                                 {{ number_format($entry['loan_payments_received'] ?? 0, 2) }}
                             </td>
                             <td
@@ -134,25 +140,28 @@
                 <tfoot class="font-semibold text-gray-700 bg-gray-100">
                     <tr>
                         <td colspan="2" class="px-3 py-3 font-bold text-left">Monthly Total</td>
-                        <td class="px-3 py-3 text-left">
+                        <td class="px-3 py-3 font-bold text-left text-green-700 bg-green-50">
                             {{ number_format(array_sum(array_column($data, 'cash_in')), 2) }}
                         </td>
-                        <td class="px-3 py-3 text-left">
+                        <td class="px-3 py-3 font-bold text-left text-red-700 bg-red-50">
                             {{ number_format(array_sum(array_column($data, 'cash_out')), 2) }}
                         </td>
-                        <td class="px-3 py-3 text-left">
+                        <td class="px-3 py-3 font-bold text-left text-green-700 bg-green-50">
                             {{ number_format(array_sum(array_column($data, 'cash_receive')), 2) }}
                         </td>
-                        <td class="px-3 py-3 text-left">
+                        <td class="px-3 py-3 font-bold text-left text-red-700 bg-red-50">
                             {{ number_format(array_sum(array_column($data, 'purchase_price')), 2) }}
                         </td>
-                        <td class="px-3 py-3 text-left">
+                        <td class="px-3 py-3 font-bold text-left text-green-700 bg-green-50">
+                            {{ number_format(array_sum(array_column($data, 'other_income')), 2) }}
+                        </td>
+                        <td class="px-3 py-3 font-bold text-left text-red-700 bg-red-50">
                             {{ number_format(array_sum(array_column($data, 'expenses')), 2) }}
                         </td>
-                        <td class="px-3 py-3 font-bold text-left text-red-600">
+                        <td class="px-3 py-3 font-bold text-left text-red-700 bg-red-50">
                             {{ number_format(array_sum(array_column($data, 'loans_given')), 2) }}
                         </td>
-                        <td class="px-3 py-3 font-bold text-left text-green-600">
+                        <td class="px-3 py-3 font-bold text-left text-green-700 bg-green-50">
                             {{ number_format(array_sum(array_column($data, 'loan_payments_received')), 2) }}
                         </td>
                         <td class="px-3 py-3 font-bold text-left text-blue-600">
@@ -179,6 +188,7 @@
                         $monthlyTotalIn =
                             array_sum(array_column($data, 'cash_in')) +
                             array_sum(array_column($data, 'cash_receive')) +
+                            array_sum(array_column($data, 'other_income')) +
                             array_sum(array_column($data, 'loan_payments_received'));
                         $monthlyTotalOut =
                             array_sum(array_column($data, 'cash_out')) +

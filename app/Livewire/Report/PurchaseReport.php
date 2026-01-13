@@ -114,10 +114,15 @@ class PurchaseReport extends Component
             'totalStockSum' => $this->totalStockSum,
             'monthName' => $monthName,
             'year' => $this->selectedYear,
-        ])->setPaper('a4')->output();
+        ])->setPaper('a4');
 
-        $base64 = base64_encode($pdf);
-        $this->dispatch('openPdfInNewTab', base64: $base64, filename: 'purchase-report.pdf');
+        $filename = 'Purchase-Report-' . $monthName . '-' . $this->selectedYear . '.pdf';
+
+        return response()->streamDownload(function() use ($pdf) {
+            echo $pdf->output();
+        }, $filename, [
+            'Content-Type' => 'application/pdf',
+        ]);
     }
 
 

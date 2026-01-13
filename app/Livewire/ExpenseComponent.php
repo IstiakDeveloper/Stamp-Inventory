@@ -37,8 +37,8 @@ class ExpenseComponent extends Component
         // Decrease the main balance by the expense amount
         $balance = Balance::first();
         $balance->decrement('total_balance', $this->amount);
-        
-        sweetalert()->success('Expense recorded successfully.)');
+
+        sweetalert()->success('Expense recorded successfully.');
 
         // Reset input fields
         $this->resetInputFields();

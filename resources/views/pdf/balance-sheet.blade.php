@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <title>Balance Sheet</title>
+    <title>Income & Expenditure Sheet</title>
     <style>
         * {
             margin: 0;
@@ -13,43 +13,40 @@
 
         body {
             font-family: 'DejaVu Sans', Arial, sans-serif;
-            font-size: 9px;
+            font-size: 10px;
             color: #000;
-            padding: 15px;
-            line-height: 1.3;
+            padding: 20px;
+            line-height: 1.4;
         }
 
         .report-header {
             text-align: center;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #000;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #000;
             padding-bottom: 10px;
         }
 
         .report-header h1 {
-            font-size: 16px;
+            font-size: 22px;
             font-weight: bold;
-            margin-bottom: 3px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            margin-bottom: 5px;
         }
 
         .report-header h2 {
-            font-size: 12px;
+            font-size: 16px;
             font-weight: bold;
-            margin-bottom: 5px;
-            text-transform: uppercase;
+            margin-bottom: 8px;
         }
 
         .report-header .date-info {
-            font-size: 9px;
+            font-size: 11px;
             margin-top: 5px;
         }
 
         .balance-container {
             width: 100%;
             display: table;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         .balance-column {
@@ -61,27 +58,21 @@
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 8px;
+            font-size: 10px;
         }
 
         .data-table th {
-            background-color: #000;
-            color: #fff;
             font-weight: bold;
-            padding: 5px 4px;
+            padding: 8px 6px;
             text-align: left;
-            border: 1px solid #000;
-            font-size: 8px;
+            border: 2px solid #000;
+            font-size: 10px;
         }
 
         .data-table td {
-            padding: 4px;
-            border: 1px solid #333;
+            padding: 6px;
+            border: 1px solid #000;
             vertical-align: middle;
-        }
-
-        .data-table tbody tr:nth-child(even) {
-            background-color: #f5f5f5;
         }
 
         .text-right {
@@ -93,57 +84,85 @@
         }
 
         .total-row {
-            background-color: #d0d0d0 !important;
             font-weight: bold;
-            border-top: 2px solid #000 !important;
+            border-top: 3px solid #000 !important;
+            border-bottom: 3px solid #000 !important;
         }
 
         .total-row td {
-            border-top: 2px solid #000;
-            padding: 5px 4px;
+            border-top: 3px solid #000;
+            border-bottom: 3px solid #000;
+            padding: 8px 6px;
+            font-weight: bold;
         }
 
         .table-header {
-            background-color: #e8e8e8;
             font-weight: bold;
             text-align: center;
-            padding: 6px 4px;
-            border: 1px solid #000;
-            font-size: 9px;
+            padding: 8px 6px;
+            border: 2px solid #000;
+            font-size: 12px;
             text-transform: uppercase;
         }
 
+        .highlight-row td {
+            font-weight: bold;
+            border: 2px solid #000;
+        }
+
         .footer {
-            margin-top: 15px;
-            padding-top: 8px;
-            border-top: 1px solid #333;
-            font-size: 7px;
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 2px solid #000;
+            font-size: 9px;
             text-align: center;
-            color: #666;
         }
     </style>
 </head>
 <body>
-    <div class="report-header">
-        <h1>{{ config('app.name', 'Mousumi Publication') }}</h1>
-        <h2>Expenditure Sheet</h2>
+    @php
+        // Ensure month and year are integers
+        $month = intval($month ?? now()->month);
+        $year = intval($year ?? now()->year);
 
-        @php
-            // Ensure month and year are integers
-            $month = intval($month);
-            $year = intval($year);
-
-            // Convert month and year to a Carbon instance
-            $date = \Carbon\Carbon::createFromFormat('!m', $month)->year($year);
-
-            // Format as "Month Year"
-            $formattedDate = $date->format('F Y');
-
-            // Helper function to format numbers without trailing zeros
+        // Helper function to format numbers without trailing zeros
+        if (!function_exists('formatNumber')) {
             function formatNumber($number) {
+                if (!is_numeric($number)) {
+                    return '0';
+                }
                 return rtrim(rtrim(number_format($number, 2, '.', ''), '0'), '.');
             }
-        @endphp
+        }
+
+        // Convert month and year to a Carbon instance
+        $date = \Carbon\Carbon::createFromFormat('!m', $month)->year($year);
+
+        // Format as "Month Year"
+        $formattedDate = $date->format('F Y');
+
+        // Initialize variables with defaults
+        $rejectOrFreeSumMonth = $rejectOrFreeSumMonth ?? 0;
+        $rejectOrFreeSumYear = $rejectOrFreeSumYear ?? 0;
+        $expenseSumMonth = $expenseSumMonth ?? 0;
+        $expenseSumYear = $expenseSumYear ?? 0;
+        $otherIncomeSumMonth = $otherIncomeSumMonth ?? 0;
+        $otherIncomeSumYear = $otherIncomeSumYear ?? 0;
+        $branchSalePriceSumMonth = $branchSalePriceSumMonth ?? 0;
+        $branchSalePriceSumYear = $branchSalePriceSumYear ?? 0;
+        $headOfficeSalePriceSumMonth = $headOfficeSalePriceSumMonth ?? 0;
+        $headOfficeSalePriceSumYear = $headOfficeSalePriceSumYear ?? 0;
+        $totalLossMonth = $totalLossMonth ?? 0;
+        $totalLossYear = $totalLossYear ?? 0;
+        $totalRevenueMonth = $totalRevenueMonth ?? 0;
+        $totalRevenueYear = $totalRevenueYear ?? 0;
+        $netProfitMonth = $netProfitMonth ?? 0;
+        $netProfitYear = $netProfitYear ?? 0;
+    @endphp
+
+    <div class="report-header">
+        <h1>{{ config('app.name', 'Mousumi Publication') }}</h1>
+        <h2>Income & Expenditure Sheet</h2>
         <div class="date-info">
             <strong>Period:</strong> {{ $formattedDate }}
         </div>
@@ -172,6 +191,11 @@
                         <td>Expenses</td>
                         <td class="text-right">{{ formatNumber($expenseSumMonth) }}</td>
                         <td class="text-right">{{ formatNumber($expenseSumYear) }}</td>
+                    </tr>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td class="text-right">&nbsp;</td>
+                        <td class="text-right">&nbsp;</td>
                     </tr>
                     <tr class="total-row">
                         <td class="font-bold">Total Loss</td>
@@ -203,6 +227,11 @@
                         <td>Head Office Sales (Total Price)</td>
                         <td class="text-right">{{ formatNumber($headOfficeSalePriceSumMonth) }}</td>
                         <td class="text-right">{{ formatNumber($headOfficeSalePriceSumYear) }}</td>
+                    </tr>
+                    <tr class="highlight-row">
+                        <td class="font-bold">Other Income</td>
+                        <td class="text-right font-bold">{{ formatNumber($otherIncomeSumMonth) }}</td>
+                        <td class="text-right font-bold">{{ formatNumber($otherIncomeSumYear) }}</td>
                     </tr>
                     <tr class="total-row">
                         <td class="font-bold">Total Sale</td>

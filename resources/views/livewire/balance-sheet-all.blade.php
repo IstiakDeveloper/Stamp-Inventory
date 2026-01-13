@@ -60,13 +60,10 @@
                             <td class="px-6 py-4 text-sm text-right border-r border-gray-300 whitespace-nowrap">
                                 @formatNumber($netProfit)</td>
                         </tr>
-                        <tr class="hover:bg-gray-100">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm border-r border-gray-300 h-[3.3rem]"></td>
-                            <td class="px-6 py-4 text-sm border-r border-gray-300 whitespace-nowrap"></td>
-                        </tr>
-                        <tr class="hover:bg-gray-100">
-                            <td class="px-6 py-4 whitespace-nowrap text-sm border-r border-gray-300 h-[3.3rem]"></td>
-                            <td class="px-6 py-4 text-sm border-r border-gray-300 whitespace-nowrap"></td>
+                        <tr class="hover:bg-gray-100 bg-green-50">
+                            <td class="px-6 py-4 text-sm font-medium text-green-700 border-r border-gray-300 whitespace-nowrap">Other Income</td>
+                            <td class="px-6 py-4 text-sm font-medium text-right text-green-700 border-r border-gray-300 whitespace-nowrap">
+                                @formatNumber($totalOtherIncome)</td>
                         </tr>
                         <tr class="bg-gray-50">
                             <td class="px-6 py-4 text-sm font-bold border-r border-gray-300 whitespace-nowrap">Total

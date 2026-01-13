@@ -106,7 +106,10 @@ class RejectOrFreeReportComponent extends Component
             $totalMonthlyLoss += $record->sets * $averageStampPricePerSet;
         }
 
-        $pdf = Pdf::view('pdf.reject-or-free-report', [
+        $monthName = date('F', mktime(0, 0, 0, $this->currentMonth, 1));
+        $filename = 'Reject-or-Free-Report-' . $monthName . '-' . $this->currentYear . '.pdf';
+
+        $pdf = Pdf::loadView('pdf.reject-or-free-report', [
             'rejectOrFreeRecords' => $this->rejectOrFreeRecords,
             'averageStampPricePerSet' => $averageStampPricePerSet,
             'previousMonthNetLoss' => $this->previousMonthNetLoss,
@@ -115,10 +118,11 @@ class RejectOrFreeReportComponent extends Component
             'totalMonthlyLoss' => $totalMonthlyLoss,
             'cumulativeSets' => $this->cumulativeSets,
             'cumulativeLoss' => $this->cumulativeLoss,
-        ])->setPaper('a4')->output();
+        ])->setPaper('a4');
 
-        $base64 = base64_encode($pdf);
-        $this->dispatch('openPdfInNewTab', base64: $base64, filename: 'reject-or-free-report-' . $this->currentYear . '-' . str_pad($this->currentMonth, 2, '0', STR_PAD_LEFT) . '.pdf');
+        return response()->streamDownload(function() use ($pdf) {
+            echo $pdf->output();
+        }, $filename, ['Content-Type' => 'application/pdf']);
     }
 
     private function getAverageStampPricePerSet()

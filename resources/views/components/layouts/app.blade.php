@@ -190,9 +190,9 @@
                                     class="block px-3 py-1.5 text-xs text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded {{ request()->routeIs('loan.management') ? 'text-blue-700 bg-blue-50' : '' }}">
                                     <i class="w-3 mr-2 fas fa-hand-holding-usd opacity-60"></i>Loan Management
                                 </a>
-                                <a href="{{ route('expences') }}"
-                                    class="block px-3 py-1.5 text-xs text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded {{ request()->routeIs('expences') ? 'text-blue-700 bg-blue-50' : '' }}">
-                                    <i class="w-3 mr-2 fas fa-receipt opacity-60"></i>Expenses
+                                <a href="{{ route('income_expense') }}"
+                                    class="block px-3 py-1.5 text-xs text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded {{ request()->routeIs('income_expense') ? 'text-blue-700 bg-blue-50' : '' }}">
+                                    <i class="w-3 mr-2 fas fa-exchange-alt opacity-60"></i>Income & Expense
                                 </a>
                                 <a href="{{ route('sofar-net-profit.index') }}"
                                     class="block px-3 py-1.5 text-xs text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded {{ request()->routeIs('sofar-net-profit.index') ? 'text-blue-700 bg-blue-50' : '' }}">
@@ -281,10 +281,6 @@
                                 <a href="{{ route('money_report') }}"
                                     class="block px-3 py-1.5 text-xs text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded {{ request()->routeIs('money_report') ? 'text-blue-700 bg-blue-50' : '' }}">
                                     <i class="w-2 mr-2 fas fa-dot-circle opacity-40"></i>Money Report
-                                </a>
-                                <a href="{{ route('expense_report') }}"
-                                    class="block px-3 py-1.5 text-xs text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded {{ request()->routeIs('expense_report') ? 'text-blue-700 bg-blue-50' : '' }}">
-                                    <i class="w-2 mr-2 fas fa-dot-circle opacity-40"></i>Expense Report
                                 </a>
                                 <a href="{{ route('bank_balance_report') }}"
                                     class="block px-3 py-1.5 text-xs text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded {{ request()->routeIs('bank_balance_report') ? 'text-blue-700 bg-blue-50' : '' }}">

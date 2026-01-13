@@ -13,7 +13,7 @@
 
         body {
             font-family: 'DejaVu Sans', Arial, sans-serif;
-            font-size: 9px;
+            font-size: 10px;
             color: #000;
             padding: 15px;
             line-height: 1.3;
@@ -44,7 +44,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 8px;
+            font-size: 10px;
             margin-bottom: 20px;
         }
 
@@ -55,20 +55,17 @@
         }
 
         th {
-            background-color: #000;
-            color: #fff;
             font-weight: bold;
             text-align: center;
-            font-size: 8px;
+            font-size: 10px;
             text-transform: uppercase;
+            border: 2px solid #000;
         }
 
         td {
-            background-color: #fff;
         }
 
         tbody tr:nth-child(even) {
-            background-color: #f5f5f5;
         }
 
         .text-left { text-align: left; }

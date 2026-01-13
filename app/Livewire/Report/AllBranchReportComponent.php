@@ -174,10 +174,13 @@ class AllBranchReportComponent extends Component
             'hoTotalPriceSum' => $this->hoTotalPriceSum,
             'hoCashSum' => $this->hoCashSum,
             'rfSetsSum' => $this->rfSetsSum,
-        ])->setPaper('a4')->output();
+        ])->setPaper('a4');
 
-        $base64 = base64_encode($pdf);
-        $this->dispatch('openPdfInNewTab', base64: $base64, filename: 'all-branch-report-' . ($this->fromDate ?? 'no-date') . '-to-' . ($this->toDate ?? 'no-date') . '.pdf');
+        $filename = 'All-Branch-Report-' . ($this->fromDate ?? 'no-date') . '-to-' . ($this->toDate ?? 'no-date') . '.pdf';
+
+        return response()->streamDownload(function() use ($pdf) {
+            echo $pdf->output();
+        }, $filename, ['Content-Type' => 'application/pdf']);
     }
 
     public function render()

@@ -1,23 +1,98 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Reject or Free Report</title>
     <style>
-        body { font-family: Arial, sans-serif; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 8px; }
-        th { background-color: #f4f4f4; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DejaVu Sans', Arial, sans-serif;
+            font-size: 10px;
+            color: #000;
+            padding: 15px;
+            line-height: 1.3;
+        }
+
+        .report-header {
+            text-align: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+        }
+
+        .report-header h2 {
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .report-info {
+            margin-bottom: 12px;
+            font-size: 10px;
+        }
+
+        .report-info p {
+            margin-bottom: 3px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+
+        th, td {
+            border: 1px solid #000;
+            padding: 5px 4px;
+        }
+
+        th {
+            font-weight: bold;
+            text-align: center;
+            border: 2px solid #000;
+            font-size: 10px;
+        }
+
+        td {
+            font-size: 10px;
+        }
+
         .text-right { text-align: right; }
         .font-bold { font-weight: bold; }
         .text-left { text-align: left; }
-        .this-month-row { background-color: #f8f8f8; }
-        .cumulative-row { background-color: #e6f0ff; }
+        .text-center { text-align: center; }
+
+        .this-month-row {
+            font-weight: bold;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
+        }
+
+        .cumulative-row {
+            font-weight: bold;
+            border-top: 3px solid #000;
+            border-bottom: 3px solid #000;
+        }
+
+        .previous-row {
+            font-weight: bold;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
+        }
     </style>
 </head>
 <body>
-    <h2>Reject or Free Report</h2>
+    <div class="report-header">
+        <h2>Reject or Free Report</h2>
+    </div>
 
-    <div>
+    <div class="report-info">
         <p><strong>Month:</strong> {{ date('F', mktime(0, 0, 0, $currentMonth, 1)) }} {{ $currentYear }}</p>
         <p><strong>Purchase Price:</strong> {{ number_format($averageStampPricePerSet, 2, '.', ',') }}</p>
     </div>
@@ -35,7 +110,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr class="previous-row">
                 <td colspan="6" class="text-right font-bold">Previous Month:</td>
                 <td class="text-left font-bold">{{ number_format($previousMonthNetLoss, 2, '.', ',') }}</td>
             </tr>

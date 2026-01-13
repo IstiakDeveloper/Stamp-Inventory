@@ -9,6 +9,7 @@ use App\Models\BranchSaleOutstanding;
 use App\Models\Expense;
 use App\Models\FundManagement;
 use App\Models\HeadOfficeSale;
+use App\Models\Income;
 use App\Models\Money;
 use App\Models\RejectOrFree;
 use App\Models\SofarNetProfit;
@@ -32,6 +33,7 @@ class BalanceSheetAll extends Component
     public $outstandingTotal;
     public $netProfit;
     public $loanReceivables; // New property for loans given
+    public $totalOtherIncome; // Other Income property
 
     public $selectedYear;
     public $selectedMonth;
@@ -132,6 +134,9 @@ class BalanceSheetAll extends Component
         // Total expenses until the selected month
         $totalExpense = Expense::where('date', '<=', $endDate)->sum('amount');
 
+        // Other Income until the selected month
+        $this->totalOtherIncome = Income::where('date', '<=', $endDate)->sum('amount');
+
         // Total lose (expenses + reject/free + cost of sold sets)
         $totalLose = $totalRejectOrFree + $saleSetBuyPrice + $totalExpense;
 
@@ -141,8 +146,8 @@ class BalanceSheetAll extends Component
         // SoFarNetProfit is the total accumulated net profit until the selected month
         $soFarNetProfitAmount = SofarNetProfit::sum('amount'); // Keeping this without filter
 
-        // Calculate net profit (total sale revenue - total expenses and losses)
-        $netProfit = $totalSale - $totalLose + $soFarNetProfitAmount;
+        // Calculate net profit (total sale revenue + other income - total expenses and losses)
+        $netProfit = $totalSale + $this->totalOtherIncome - $totalLose + $soFarNetProfitAmount;
 
         // Store the computed values
         $this->netProfit = $netProfit;
@@ -169,12 +174,15 @@ class BalanceSheetAll extends Component
             ->sum('cash') + BranchSale::whereDate('date', '<=', $endDate)
             ->sum('cash');
 
+        $totalOtherIncome = Income::whereDate('date', '<=', $endDate)
+            ->sum('amount');
+
         // Add loan impact to balance calculation
         $totalLoansGiven = Loan::where('date', '<=', $endDate)->sum('amount');
         $totalLoanPaymentsReceived = LoanPayment::where('date', '<=', $endDate)->sum('amount');
 
-        // Calculating the total balance up until the selected month (including loan impact)
-        $totalBalance = $cashInTotal + $totalSalesReceipts + $totalLoanPaymentsReceived
+        // Calculating the total balance up until the selected month (including loan impact and other income)
+        $totalBalance = $cashInTotal + $totalSalesReceipts + $totalOtherIncome + $totalLoanPaymentsReceived
             - $cashOutTotal - $totalPurchases - $totalExpenses - $totalLoansGiven;
 
         return $totalBalance;
@@ -193,12 +201,24 @@ class BalanceSheetAll extends Component
             'outstandingTotal' => $this->outstandingTotal,
             'loanReceivables' => $this->loanReceivables,
             'netProfit' => $this->netProfit,
+            'totalOtherIncome' => $this->totalOtherIncome,
             'month' => (int)$this->selectedMonth,
             'year' => (int)$this->selectedYear,
-        ])->setPaper('a4')->output();
+        ])->setPaper('a4', 'landscape');
 
-        $base64 = base64_encode($pdf);
-        $this->dispatch('openPdfInNewTab', base64: $base64, filename: 'balance-sheet-all.pdf');
+        $monthNames = [
+            1 => "January", 2 => "February", 3 => "March", 4 => "April",
+            5 => "May", 6 => "June", 7 => "July", 8 => "August",
+            9 => "September", 10 => "October", 11 => "November", 12 => "December"
+        ];
+
+        $filename = 'Balance-Sheet-' . $monthNames[(int)$this->selectedMonth] . '-' . $this->selectedYear . '.pdf';
+
+        return response()->streamDownload(function() use ($pdf) {
+            echo $pdf->output();
+        }, $filename, [
+            'Content-Type' => 'application/pdf',
+        ]);
     }
 
     public function render()

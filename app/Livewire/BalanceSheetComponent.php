@@ -6,9 +6,10 @@ use App\Models\RejectOrFree;
 use App\Models\Expense;
 use App\Models\BranchSale;
 use App\Models\HeadOfficeSale;
+use App\Models\Income;
 use App\Models\Stock;
 use App\Models\TotalStock;
-use App\Models\SofarNetProfit; // Add this line
+use App\Models\SofarNetProfit;
 use Carbon\Carbon;
 use Livewire\Component;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -73,6 +74,7 @@ class BalanceSheetComponent extends Component
 
         $rejectOrFreeSumMonth = RejectOrFree::whereBetween('date', [$startMonth, $endMonth])->sum('sets') * $this->getPurchasePriceSet();
         $expenseSumMonth = Expense::whereBetween('date', [$startMonth, $endMonth])->sum('amount');
+        $otherIncomeSumMonth = Income::whereBetween('date', [$startMonth, $endMonth])->sum('amount');
         $branchSalePriceSumMonth = BranchSale::whereBetween('date', [$startMonth, $endMonth])->sum('total_price');
 
         $headOfficeSalePriceSumMonth = HeadOfficeSale::whereBetween('date', [$startMonth, $endMonth])->sum('total_price');
@@ -89,7 +91,7 @@ class BalanceSheetComponent extends Component
         $sofarNetProfitSumMonth = SofarNetProfit::whereBetween('date', [$startMonth, $endMonth])->sum('amount');
 
         $totalLossMonth = $rejectOrFreeSumMonth + $expenseSumMonth;
-        $totalRevenueMonth = $branchSalePriceSumMonth + $headOfficeSalePriceSumMonth + $sofarNetProfitSumMonth;
+        $totalRevenueMonth = $branchSalePriceSumMonth + $headOfficeSalePriceSumMonth + $sofarNetProfitSumMonth + $otherIncomeSumMonth;
         $netProfitMonth = $totalRevenueMonth - $totalLossMonth;
 
         // For the entire year
@@ -98,6 +100,7 @@ class BalanceSheetComponent extends Component
 
         $rejectOrFreeSumYear = RejectOrFree::whereBetween('date', [$startYear, $endYear])->sum('sets') * $this->getPurchasePriceSet();
         $expenseSumYear = Expense::whereBetween('date', [$startYear, $endYear])->sum('amount');
+        $otherIncomeSumYear = Income::whereBetween('date', [$startYear, $endYear])->sum('amount');
         $branchSalePriceSumYear = BranchSale::whereBetween('date', [$startYear, $endYear])->sum('total_price');
         $headOfficeSalePriceSumYear = HeadOfficeSale::whereBetween('date', [$startYear, $endYear])->sum('total_price');
 
@@ -112,7 +115,7 @@ class BalanceSheetComponent extends Component
         $sofarNetProfitSumYear = SofarNetProfit::whereBetween('date', [$startYear, $endYear])->sum('amount');
 
         $totalLossYear = $rejectOrFreeSumYear + $expenseSumYear;
-        $totalRevenueYear = $branchSalePriceSumYear + $headOfficeSalePriceSumYear + $sofarNetProfitSumYear;
+        $totalRevenueYear = $branchSalePriceSumYear + $headOfficeSalePriceSumYear + $sofarNetProfitSumYear + $otherIncomeSumYear;
         $netProfitYear = $totalRevenueYear - $totalLossYear;
 
 
@@ -122,6 +125,8 @@ class BalanceSheetComponent extends Component
             'rejectOrFreeSumYear' => $rejectOrFreeSumYear,
             'expenseSumMonth' => $expenseSumMonth,
             'expenseSumYear' => $expenseSumYear,
+            'otherIncomeSumMonth' => $otherIncomeSumMonth,
+            'otherIncomeSumYear' => $otherIncomeSumYear,
             'branchSalePriceSumMonth' => $branchSalePriceSumMonth,
             'branchSalePriceSumYear' => $branchSalePriceSumYear,
             'headOfficeSalePriceSumMonth' => $headOfficeSalePriceSumMonth,
@@ -192,6 +197,8 @@ class BalanceSheetComponent extends Component
             'rejectOrFreeSumYear' => $values['rejectOrFreeSumYear'],
             'expenseSumMonth' => $values['expenseSumMonth'],
             'expenseSumYear' => $values['expenseSumYear'],
+            'otherIncomeSumMonth' => $values['otherIncomeSumMonth'],
+            'otherIncomeSumYear' => $values['otherIncomeSumYear'],
             'branchSalePriceSumMonth' => $values['branchSalePriceSumMonth'],
             'branchSalePriceSumYear' => $values['branchSalePriceSumYear'],
             'headOfficeSalePriceSumMonth' => $values['headOfficeSalePriceSumMonth'],
@@ -221,6 +228,8 @@ class BalanceSheetComponent extends Component
             'rejectOrFreeSumYear' => $values['rejectOrFreeSumYear'],
             'expenseSumMonth' => $values['expenseSumMonth'],
             'expenseSumYear' => $values['expenseSumYear'],
+            'otherIncomeSumMonth' => $values['otherIncomeSumMonth'],
+            'otherIncomeSumYear' => $values['otherIncomeSumYear'],
             'branchSalePriceSumMonth' => $values['branchSalePriceSumMonth'],
             'branchSalePriceSumYear' => $values['branchSalePriceSumYear'],
             'headOfficeSalePriceSumMonth' => $values['headOfficeSalePriceSumMonth'],
@@ -235,9 +244,20 @@ class BalanceSheetComponent extends Component
             'netProfitYear' => $values['netProfitYear'],
             'sofarNetProfitSumMonth' => $values['sofarNetProfitSumMonth'],
             'sofarNetProfitSumYear' => $values['sofarNetProfitSumYear'],
-        ])->setPaper('a4')->output();
+        ])->setPaper('a4', 'landscape');
 
-        $base64 = base64_encode($pdf);
-        $this->dispatch('openPdfInNewTab', base64: $base64, filename: 'balance_sheet_' . $this->year . '_' . $this->month . '.pdf');
+        $monthNames = [
+            1 => "January", 2 => "February", 3 => "March", 4 => "April",
+            5 => "May", 6 => "June", 7 => "July", 8 => "August",
+            9 => "September", 10 => "October", 11 => "November", 12 => "December"
+        ];
+
+        $filename = 'Income-Expenditure-Sheet-' . $monthNames[(int)$this->month] . '-' . $this->year . '.pdf';
+
+        return response()->streamDownload(function() use ($pdf) {
+            echo $pdf->output();
+        }, $filename, [
+            'Content-Type' => 'application/pdf',
+        ]);
     }
 }

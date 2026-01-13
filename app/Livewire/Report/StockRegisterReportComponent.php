@@ -268,6 +268,9 @@ class StockRegisterReportComponent extends Component
         $totalSetsBuyPrice = $stockQuery->sum('total_price');
         $averageStampPricePerSet = $totalSetsBuy > 0 ? $totalSetsBuyPrice / $totalSetsBuy : 0;
 
+        $monthName = date('F', mktime(0, 0, 0, $this->selectedMonth, 1));
+        $filename = 'Stock-Register-Report-' . $monthName . '-' . $this->selectedYear . '.pdf';
+
         $pdf = Pdf::loadView('pdf.stock-register-report', [
             'stockInData' => $stockInData,
             'stockOutData' => $stockOutData,
@@ -284,10 +287,11 @@ class StockRegisterReportComponent extends Component
             'selectedMonth' => $this->selectedMonth,
             'availableSets' => $availableSets,
             'averageStampPricePerSet' => $averageStampPricePerSet,
-        ])->setPaper('a4')->output();
+        ])->setPaper('a4');
 
-        $base64 = base64_encode($pdf);
-        $this->dispatch('openPdfInNewTab', base64: $base64, filename: 'stock-register-report-' . $this->selectedMonth . '-' . $this->selectedYear . '.pdf');
+        return response()->streamDownload(function() use ($pdf) {
+            echo $pdf->output();
+        }, $filename, ['Content-Type' => 'application/pdf']);
     }
 
 }

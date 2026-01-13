@@ -107,6 +107,9 @@ public $selectedMonth;
         $completeMonth = $this->getCompleteMonth();
         $totalDue = $this->soFarDue + $sales->sum('due');
 
+        $monthName = date('F', mktime(0, 0, 0, $this->selectedMonth, 1));
+        $filename = 'Head-Office-Sale-Report-' . $monthName . '-' . $this->selectedYear . '.pdf';
+
         $pdf = Pdf::loadView('pdf.head-office-sale-report', [
             'sales' => $sales,
             'completeMonth' => $completeMonth,
@@ -120,10 +123,11 @@ public $selectedMonth;
             'totalDue' => $totalDue,
             'selectedMonth' => (int)$this->selectedMonth,
             'selectedYear' => (int)$this->selectedYear,
-        ])->setPaper('a4')->output();
+        ])->setPaper('a4');
 
-        $base64 = base64_encode($pdf);
-        $this->dispatch('openPdfInNewTab', base64: $base64, filename: 'head-office-sale-report-' . $this->selectedYear . '-' . $this->selectedMonth . '.pdf');
+        return response()->streamDownload(function() use ($pdf) {
+            echo $pdf->output();
+        }, $filename, ['Content-Type' => 'application/pdf']);
     }
 
     private function getCompleteMonth()

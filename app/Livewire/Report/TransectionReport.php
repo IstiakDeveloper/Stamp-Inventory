@@ -53,12 +53,16 @@ class TransectionReport extends Component
     {
         $this->filterTransactions();
 
+        $monthName = $this->month ? date('F', mktime(0, 0, 0, $this->month, 1)) : 'All';
+        $filename = 'Transactions-Report-' . $monthName . '-' . ($this->year ?? 'All-Years') . '.pdf';
+
         $pdf = Pdf::loadView('pdf.transactions', [
             'transactions' => $this->transactions,
-        ])->setPaper('a4')->output();
+        ])->setPaper('a4');
 
-        $base64 = base64_encode($pdf);
-        $this->dispatch('openPdfInNewTab', base64: $base64, filename: 'transactions-report.pdf');
+        return response()->streamDownload(function() use ($pdf) {
+            echo $pdf->output();
+        }, $filename, ['Content-Type' => 'application/pdf']);
     }
 
     public function render()

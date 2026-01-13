@@ -70,6 +70,17 @@
 
                                 </td>
                             </tr>
+
+                            <tr class="bg-white font-bold">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm border-r border-gray-300 h-[3.3rem]"></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm border-r border-gray-300 h-[3.3rem]">
+
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm border-r border-gray-300 h-[3.3rem]">
+
+                                </td>
+                            </tr>
+
                             <tr class="bg-white font-bold">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm border-r border-gray-300">Total </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm border-r border-gray-300 text-right">
@@ -121,6 +132,15 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm border-r border-gray-300 text-right">
                                     {{ rtrim(rtrim(number_format($headOfficeSalePriceSumYear, 2, '.', ''), '0'), '.') }}
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-100 bg-green-50">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm border-r border-gray-300 font-medium text-green-700">Other Income</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm border-r border-gray-300 text-right font-medium text-green-700">
+                                    {{ rtrim(rtrim(number_format($otherIncomeSumMonth, 2, '.', ''), '0'), '.') }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm border-r border-gray-300 text-right font-medium text-green-700">
+                                    {{ rtrim(rtrim(number_format($otherIncomeSumYear, 2, '.', ''), '0'), '.') }}
                                 </td>
                             </tr>
 

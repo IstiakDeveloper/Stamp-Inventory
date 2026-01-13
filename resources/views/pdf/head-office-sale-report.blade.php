@@ -13,7 +13,7 @@
 
         body {
             font-family: 'DejaVu Sans', Arial, sans-serif;
-            font-size: 9px;
+            font-size: 10px;
             color: #000;
             padding: 15px;
             line-height: 1.3;
@@ -44,32 +44,32 @@
         .report-info {
             text-align: center;
             margin-bottom: 12px;
-            font-size: 8px;
+            font-size: 10px;
             font-weight: bold;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 8px;
+            font-size: 10px;
         }
         th, td {
             border: 1px solid #333;
             padding: 4px;
         }
         th {
-            background-color: #000;
-            color: #fff;
             font-weight: bold;
             text-align: left;
+            border: 2px solid #000;
         }
         .total-row {
             font-weight: bold;
-            background-color: #d0d0d0;
-            border-top: 2px solid #000;
+            border-top: 3px solid #000;
+            border-bottom: 3px solid #000;
         }
         .highlight-row {
-            background-color: #f5f5f5;
+            border-top: 2px solid #000;
+            border-bottom: 2px solid #000;
         }
         .font-bold {
             font-weight: bold;
