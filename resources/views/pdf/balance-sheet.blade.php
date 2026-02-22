@@ -168,80 +168,63 @@
         </div>
     </div>
 
-    <!-- Table with two columns -->
-    <div class="balance-container">
-        <!-- Left Column -->
-        <div class="balance-column" style="padding-right: 5px;">
-            <div class="table-header">Expenditure</div>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th style="width: 50%;">Title</th>
-                        <th style="width: 25%;" class="text-right">For the Month</th>
-                        <th style="width: 25%;" class="text-right">For the Year</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Reject or Free (Total Purchase Price)</td>
-                        <td class="text-right">{{ formatNumber($rejectOrFreeSumMonth) }}</td>
-                        <td class="text-right">{{ formatNumber($rejectOrFreeSumYear) }}</td>
-                    </tr>
-                    <tr>
-                        <td>Expenses</td>
-                        <td class="text-right">{{ formatNumber($expenseSumMonth) }}</td>
-                        <td class="text-right">{{ formatNumber($expenseSumYear) }}</td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;</td>
-                        <td class="text-right">&nbsp;</td>
-                        <td class="text-right">&nbsp;</td>
-                    </tr>
-                    <tr class="total-row">
-                        <td class="font-bold">Total Loss</td>
-                        <td class="text-right font-bold">{{ formatNumber($totalLossMonth) }}</td>
-                        <td class="text-right font-bold">{{ formatNumber($totalLossYear) }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Right Column -->
-        <div class="balance-column" style="padding-left: 5px;">
-            <div class="table-header">Revenue</div>
-            <table class="data-table">
-                <thead>
-                    <tr>
-                        <th style="width: 50%;">Title</th>
-                        <th style="width: 25%;" class="text-right">For the Month</th>
-                        <th style="width: 25%;" class="text-right">For the Year</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Branch Sales (Total Price)</td>
-                        <td class="text-right">{{ formatNumber($branchSalePriceSumMonth) }}</td>
-                        <td class="text-right">{{ formatNumber($branchSalePriceSumYear) }}</td>
-                    </tr>
-                    <tr>
-                        <td>Head Office Sales (Total Price)</td>
-                        <td class="text-right">{{ formatNumber($headOfficeSalePriceSumMonth) }}</td>
-                        <td class="text-right">{{ formatNumber($headOfficeSalePriceSumYear) }}</td>
-                    </tr>
-                    <tr class="highlight-row">
-                        <td class="font-bold">Other Income</td>
-                        <td class="text-right font-bold">{{ formatNumber($otherIncomeSumMonth) }}</td>
-                        <td class="text-right font-bold">{{ formatNumber($otherIncomeSumYear) }}</td>
-                    </tr>
-                    <tr class="total-row">
-                        <td class="font-bold">Total Sale</td>
-                        <td class="text-right font-bold">{{ formatNumber($totalRevenueMonth) }}</td>
-                        <td class="text-right font-bold">{{ formatNumber($totalRevenueYear) }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <!-- Single unified table for guaranteed row alignment -->
+    <table class="data-table" style="width: 100%; border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th style="width: 25%; border: 2px solid #000; text-align: center;" colspan="3">EXPENDITURE</th>
+                <th style="width: 2px; border: 3px solid #000; padding: 0;"></th>
+                <th style="width: 25%; border: 2px solid #000; text-align: center;" colspan="3">REVENUE</th>
+            </tr>
+            <tr>
+                <th style="width: 28%;">Title</th>
+                <th style="width: 11%;" class="text-right">For the Month</th>
+                <th style="width: 11%;" class="text-right">For the Year</th>
+                <th style="width: 0; border-left: 3px solid #000; border-right: 3px solid #000; padding: 0;"></th>
+                <th style="width: 28%;">Title</th>
+                <th style="width: 11%;" class="text-right">For the Month</th>
+                <th style="width: 11%;" class="text-right">For the Year</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Reject or Free (Buy Price)</td>
+                <td class="text-right">{{ formatNumber($rejectOrFreeSumMonth) }}</td>
+                <td class="text-right">{{ formatNumber($rejectOrFreeSumYear) }}</td>
+                <td style="border-left: 3px solid #000; border-right: 3px solid #000; padding: 0;"></td>
+                <td>Branch Sales (Total Price)</td>
+                <td class="text-right">{{ formatNumber($branchSalePriceSumMonth) }}</td>
+                <td class="text-right">{{ formatNumber($branchSalePriceSumYear) }}</td>
+            </tr>
+            <tr>
+                <td>Expenses</td>
+                <td class="text-right">{{ formatNumber($expenseSumMonth) }}</td>
+                <td class="text-right">{{ formatNumber($expenseSumYear) }}</td>
+                <td style="border-left: 3px solid #000; border-right: 3px solid #000; padding: 0;"></td>
+                <td>Head Office Sales (Total Price)</td>
+                <td class="text-right">{{ formatNumber($headOfficeSalePriceSumMonth) }}</td>
+                <td class="text-right">{{ formatNumber($headOfficeSalePriceSumYear) }}</td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td style="border-left: 3px solid #000; border-right: 3px solid #000; padding: 0;"></td>
+                <td class="font-bold">Other Income</td>
+                <td class="text-right font-bold">{{ formatNumber($otherIncomeSumMonth) }}</td>
+                <td class="text-right font-bold">{{ formatNumber($otherIncomeSumYear) }}</td>
+            </tr>
+            <tr class="total-row">
+                <td class="font-bold">Total Loss</td>
+                <td class="text-right font-bold">{{ formatNumber($totalLossMonth) }}</td>
+                <td class="text-right font-bold">{{ formatNumber($totalLossYear) }}</td>
+                <td style="border-left: 3px solid #000; border-right: 3px solid #000; padding: 0;"></td>
+                <td class="font-bold">Total Sale</td>
+                <td class="text-right font-bold">{{ formatNumber($totalRevenueMonth) }}</td>
+                <td class="text-right font-bold">{{ formatNumber($totalRevenueYear) }}</td>
+            </tr>
+        </tbody>
+    </table>
 
     <!-- Net Profit Table -->
     <div style="margin-top: 10px;">

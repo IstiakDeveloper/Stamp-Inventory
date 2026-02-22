@@ -204,7 +204,7 @@ class BalanceSheetAll extends Component
             'totalOtherIncome' => $this->totalOtherIncome,
             'month' => (int)$this->selectedMonth,
             'year' => (int)$this->selectedYear,
-        ])->setPaper('a4', 'landscape');
+        ])->setPaper('a4', 'portrait');
 
         $monthNames = [
             1 => "January", 2 => "February", 3 => "March", 4 => "April",

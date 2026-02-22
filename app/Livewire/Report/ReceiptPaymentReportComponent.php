@@ -126,7 +126,7 @@ class ReceiptPaymentReportComponent extends Component
             'data' => $this->data,
             'month' => (int)$this->month,
             'year' => (int)$this->year,
-        ])->setPaper('a4', 'landscape');
+        ])->setPaper('a4', 'portrait');
 
         $monthNames = [
             1 => "January", 2 => "February", 3 => "March", 4 => "April",

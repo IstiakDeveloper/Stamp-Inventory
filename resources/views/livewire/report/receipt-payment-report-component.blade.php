@@ -195,11 +195,11 @@
             Download PDF
         </button>
 
-        <button onclick="window.print()"
+        {{-- <button onclick="window.print()"
             class="px-4 py-2 font-bold text-white transition-colors bg-gray-500 rounded hover:bg-gray-700">
             <i class="mr-2 fas fa-print"></i>
             Print Report
-        </button>
+        </button> --}}
 
         @if (
             (isset($data['loans_given']) && $data['loans_given'] > 0) ||

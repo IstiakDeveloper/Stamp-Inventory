@@ -244,7 +244,7 @@ class BalanceSheetComponent extends Component
             'netProfitYear' => $values['netProfitYear'],
             'sofarNetProfitSumMonth' => $values['sofarNetProfitSumMonth'],
             'sofarNetProfitSumYear' => $values['sofarNetProfitSumYear'],
-        ])->setPaper('a4', 'landscape');
+        ])->setPaper('a4', 'portrait');
 
         $monthNames = [
             1 => "January", 2 => "February", 3 => "March", 4 => "April",

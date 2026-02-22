@@ -159,9 +159,13 @@
                         <td>Net Profit</td>
                         <td class="text-right">{{ number_format($netProfit, 2) }}</td>
                     </tr>
-                    <tr class="highlight-row">
-                        <td class="font-bold">Other Income</td>
-                        <td class="text-right font-bold">{{ number_format($totalOtherIncome ?? 0, 2) }}</td>
+                    <tr class="empty-row">
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr class="empty-row">
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
                     </tr>
                     <tr class="total-row">
                         <td class="font-bold">TOTAL</td>

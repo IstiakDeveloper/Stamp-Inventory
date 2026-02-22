@@ -60,10 +60,13 @@
                             <td class="px-6 py-4 text-sm text-right border-r border-gray-300 whitespace-nowrap">
                                 @formatNumber($netProfit)</td>
                         </tr>
-                        <tr class="hover:bg-gray-100 bg-green-50">
-                            <td class="px-6 py-4 text-sm font-medium text-green-700 border-r border-gray-300 whitespace-nowrap">Other Income</td>
-                            <td class="px-6 py-4 text-sm font-medium text-right text-green-700 border-r border-gray-300 whitespace-nowrap">
-                                @formatNumber($totalOtherIncome)</td>
+                        <tr>
+                            <td class="px-6 py-4 text-sm border-r border-gray-300 whitespace-nowrap">&nbsp;</td>
+                            <td class="px-6 py-4 text-sm border-r border-gray-300 whitespace-nowrap">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 text-sm border-r border-gray-300 whitespace-nowrap">&nbsp;</td>
+                            <td class="px-6 py-4 text-sm border-r border-gray-300 whitespace-nowrap">&nbsp;</td>
                         </tr>
                         <tr class="bg-gray-50">
                             <td class="px-6 py-4 text-sm font-bold border-r border-gray-300 whitespace-nowrap">Total
@@ -186,11 +189,11 @@
             Download PDF
         </button>
 
-        <button onclick="window.print()"
+        {{-- <button onclick="window.print()"
             class="px-4 py-2 font-bold text-white transition-colors bg-gray-500 rounded hover:bg-gray-700">
             <i class="mr-2 fas fa-print"></i>
             Print Balance Sheet
-        </button>
+        </button> --}}
 
         @if ($loanReceivables > 0)
             <a href="{{ route('loan.management') }}"
@@ -204,7 +207,20 @@
     <x-pdf-viewer-script />
 
     <style>
+        @@page {
+            size: A4 portrait;
+            margin: 10mm;
+        }
+
         @media print {
+            html, body {
+                width: 210mm;
+                height: 297mm;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: hidden;
+            }
+
             body * {
                 visibility: hidden;
             }
@@ -215,16 +231,70 @@
             }
 
             #content-to-pdf {
-                position: absolute;
+                position: fixed;
                 left: 0;
                 top: 0;
                 width: 100%;
+                padding: 5mm;
+                box-sizing: border-box;
             }
 
-            /* Hide buttons and other non-essential elements during print */
+            /* Scale down headings */
+            #content-to-pdf h2:first-child {
+                font-size: 18pt !important;
+                margin-bottom: 2px !important;
+            }
+            #content-to-pdf h2:nth-child(2) {
+                font-size: 13pt !important;
+                margin-bottom: 6px !important;
+            }
+            #content-to-pdf h3 {
+                font-size: 10pt !important;
+                margin-bottom: 4px !important;
+            }
+
+            /* Compact table cells */
+            #content-to-pdf td,
+            #content-to-pdf th {
+                padding: 4px 8px !important;
+                font-size: 9pt !important;
+            }
+            #content-to-pdf caption {
+                padding: 4px !important;
+                font-size: 10pt !important;
+            }
+
+            /* Compact verification and notes sections */
+            #content-to-pdf .mt-6,
+            #content-to-pdf .mt-4 {
+                margin-top: 6px !important;
+            }
+            #content-to-pdf .p-4 {
+                padding: 6px !important;
+            }
+            #content-to-pdf h4 {
+                font-size: 9pt !important;
+                margin-bottom: 2px !important;
+            }
+            #content-to-pdf .text-sm,
+            #content-to-pdf .text-xs {
+                font-size: 8pt !important;
+            }
+
+            /* Hide buttons, links and filter controls during print */
             button,
-            .no-print {
+            a,
+            select,
+            label,
+            .no-print,
+            .flex.items-center.gap-4,
+            .flex.gap-4 {
                 display: none !important;
+            }
+
+            /* Prevent page breaks */
+            table, tr, td, th, thead, tbody {
+                page-break-inside: avoid !important;
             }
         }
 
